@@ -1,4 +1,4 @@
-const { remote } = require('electron');
+const { remote, shell } = require('electron');
 const mainProcess = remote.require('./main.js');
 
 const { processor } = require("./src/ambilight/processor");
@@ -58,3 +58,8 @@ const startElem = document
 
   })
 */
+
+const gitBtn = document.getElementById('git')
+  .addEventListener('click', () => {
+    shell.openExternal('https://github.com/Tagueo/icue-ambilight')
+  })

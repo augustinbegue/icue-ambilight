@@ -12,7 +12,7 @@ function init() {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: './src/img/icons/favicon-96x96.png'
+    icon: './src/img/icons/icon.png'
   })
 
   // and load the index.html of the app.

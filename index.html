@@ -4,8 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <title>iCue Ambilight</title>
-  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="src/css/bulmaswatch.min.css">
@@ -18,20 +16,19 @@
 
 <body>
   <section class="section">
-    <div class="container">
-      <div class="columns">
-        <div class="column is-1">
-          <img src="./src/img/icons/icon.png" alt="icue-ambilight" style="width: fit-content; height: auto; max-width: 100px;">
-        </div>
-        <div class="column" style="margin: auto;">
-          <h1 class="title is-3">
-            iCue Ambilight
-          </h1>
-          <p class="subtitle is-5">
-            Synchronise your ICue compatible devices with the content displayed on your screen.
-          </p>
-        </div>
+    <div class="container" style="display: flex; flex-direction: row; justify-content: space-around;">
+      <img src="./src/img/icons/icon.png" alt="icue-ambilight" style="height: 96px; margin: 16px;">
+      <div style="width: 100%; display: flex; flex-direction: column; justify-content: center; height: 96px;">
+        <h1 class="title is-3">
+          iCue Ambilight
+        </h1>
+        <p class="subtitle is-5">
+          Synchronise your iCue compatible devices with the content displayed on your screen.
+        </p>
       </div>
+    </div>
+    <div class="container" style="display: flex; flex-direction: row; justify-content: flex-start;">
+      <a id="git"><img src="https://git-scm.com/images/logos/downloads/Git-Icon-White.png" style="height: 48px; margin: 8px;"></a>
     </div>
   </section>
   <!--<section class="section">
