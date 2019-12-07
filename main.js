@@ -11,7 +11,8 @@ function init() {
     height: 600,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    icon: './src/img/icons/favicon-96x96.png'
   })
 
   // and load the index.html of the app.
