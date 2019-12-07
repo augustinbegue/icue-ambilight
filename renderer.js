@@ -60,12 +60,6 @@ const refreshSourcesEl = document
     refreshSources();
   })
 
-const startElem = document
-  .getElementById('startAmbilight')
-  .addEventListener('click', (event) => {
-
-  })
-
 const gitBtn = document.getElementById('git')
   .addEventListener('click', () => {
     shell.openExternal('https://github.com/Tagueo/icue-ambilight')

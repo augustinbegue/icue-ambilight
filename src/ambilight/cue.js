@@ -3,7 +3,6 @@ const config = JSON.parse(localStorage.getItem('config'))
 
 const cue = {
   init: async function () {
-    console.log("init");
     
     this.c1 = document.getElementById("c1");
     this.ctx1 = this.c1.getContext("2d");
@@ -36,14 +35,12 @@ const cue = {
     }, 1000 / config.refreshrate)
   },
   updateLeds: function () {
-    console.log("updateLeds");
     for (let i = 0; i < this.positions.length; i++) {
       sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(this.positions[i]));
       sdk.CorsairSetLedsColorsFlushBuffer();
     }
   },
   getColors: function (positions) {
-    console.log("getColors");
     return colors = positions.map((p) => {
       const imgData = this.ctx1.getImageData(p.left, p.top, 1, 1).data
       return {
@@ -55,7 +52,6 @@ const cue = {
     });
   },
   getMaxDefinition: function () {
-    console.log("getMaxDefinition");
     let extremums = {
       maxX: 0,
       maxY: 0,
@@ -70,7 +66,7 @@ const cue = {
         }
         let newY = positions.reduce((acc, curr) => Math.max(curr.top, acc), 0);
         if (newY > extremums.maxY) {
-          extremums.maxY = newY
+          extremums.maxY = newY+1
         }
       }
     }
