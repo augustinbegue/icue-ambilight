@@ -1,0 +1,30 @@
+{
+  "name": "icue-ambilight",
+  "version": "1.0.0",
+  "description": "Ambilight for icue devices",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^7.1.3"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tagueo/icue-ambilight.git"
+  },
+  "keywords": [
+    "icue",
+    "ambilight"
+  ],
+  "author": "Augustin Bégué",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tagueo/icue-ambilight/issues"
+  },
+  "homepage": "https://github.com/Tagueo/icue-ambilight#readme",
+  "dependencies": {
+    "bulma": "^0.8.0",
+    "cue-sdk": "^1.0.0"
+  }
+}

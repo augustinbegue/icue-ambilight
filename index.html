@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>ICue Ambilight</title>
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="src/css/bulmaswatch.min.css">
+  <style>
+    .source:hover, .source:focus, .selected {
+      box-shadow: 0 0 0 0.125em rgba(50,115,226,.25);
+    }
+  </style>
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-3">
+        ICue Ambilight
+      </h1>
+      <p class="subtitle is-5">
+        Synchronise your ICue compatible devices with the content displayed on your screen.
+      </p>
+    </div>
+  </section>
+  <!--<section class="section">
+    <div class="container">
+      <h1 class="title is-5">
+        Control
+      </h1>
+      <button id="refreshSources" class="button is-rounded">Refresh Sources</button>
+      <button id="startAmbilight" class="button is-rounded">Start Ambilight</button>
+    </div>
+  </section>-->
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-5">Sources</h1>
+      <div id="sources">
+        
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-5">
+        Capture previews
+      </h1>
+      <div class="columns">
+        <div class="column">
+          <video id="video" autoplay controls></video>
+        </div>
+        <div class="column">
+          <canvas id="c1" style="height: auto; width: 100%;"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    require('./renderer.js')
+  </script>
+</body>
+
+</html>
