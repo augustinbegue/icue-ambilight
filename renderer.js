@@ -7,6 +7,14 @@ const { getSources, startCapture } = require("./src/capture")
 
 const sourcesEl = document.getElementById('sources')
 
+if (!localStorage.getItem('config')) {
+  localStorage.setItem('config', `${
+    JSON.stringify({
+      refreshrate: 30,
+    })
+  }`)
+}
+
 cue.init()
 refreshSources()
 processor.doLoad();
@@ -46,7 +54,7 @@ function refreshSources() {
   });
 }
 
-/*const refreshSourcesEl = document
+const refreshSourcesEl = document
   .getElementById('refreshSources')
   .addEventListener('click', (event) => {
     refreshSources();
@@ -57,7 +65,6 @@ const startElem = document
   .addEventListener('click', (event) => {
 
   })
-*/
 
 const gitBtn = document.getElementById('git')
   .addEventListener('click', () => {

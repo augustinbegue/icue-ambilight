@@ -42,7 +42,7 @@
   </section>-->
   <section class="section">
     <div class="container">
-      <h1 class="title is-5">Sources</h1>
+      <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button></h1>
       <div id="sources">
         
       </div>
@@ -51,9 +51,9 @@
   <section class="section">
     <div class="container">
       <h1 class="title is-5">
-        Capture previews
+        Capture previews <button class="button is-rounded is-small" onclick="document.getElementById('captures').classList.toggle('is-hidden')">Hide to lower CPU Usage</button>
       </h1>
-      <div class="columns">
+      <div id="captures" class="columns">
         <div class="column">
           <video id="video" autoplay controls></video>
         </div>
