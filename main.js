@@ -10,6 +10,7 @@ function init() {
     width: 800,
     height: 600,
     webPreferences: {
+      backgroundThrottling: false,
       nodeIntegration: true
     },
     icon: './src/img/icons/icon.png'
