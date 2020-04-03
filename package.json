@@ -4,7 +4,7 @@
   "description": "Ambilight for iCue devices",
   "main": "main.js",
   "devDependencies": {
-    "electron": "^7.1.3",
+    "electron": "^8.2.0",
     "electron-packager": "^14.1.1",
     "electron-builder": "^21.2.0"
   },
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/Tagueo/icue-ambilight#readme",
   "dependencies": {
     "bulma": "^0.8.0",
-    "cue-sdk": "^1.0.0"
+    "cue-sdk": "^1.1.0"
   },
   "build": {
     "appId": "com.icueambilight.app",
