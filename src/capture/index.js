@@ -1,5 +1,5 @@
 const { desktopCapturer } = require('electron');
-const { cue } = require('../ambilight/cue')
+const { cue } = require('../cue/cue')
 
 function getSources() {
   return new Promise((resolve, reject) => {

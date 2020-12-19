@@ -5,8 +5,8 @@
   "main": "main.js",
   "devDependencies": {
     "electron": "^8.2.0",
-    "electron-packager": "^14.1.1",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^22.10.3",
+    "electron-packager": "^15.2.0"
   },
   "scripts": {
     "start": "electron .",
@@ -28,8 +28,7 @@
   },
   "homepage": "https://github.com/Tagueo/icue-ambilight#readme",
   "dependencies": {
-    "bulma": "^0.8.0",
-    "cue-sdk": "^1.1.0"
+    "cue-sdk": "^1.6.0"
   },
   "build": {
     "appId": "com.icueambilight.app",

@@ -4,70 +4,97 @@
 <head>
   <meta charset="UTF-8">
   <title>iCue Ambilight</title>
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script src="https://kit.fontawesome.com/d733869e4d.js" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="src/css/bulmaswatch.min.css">
   <style>
     .source:hover, .source:focus, .selected {
       box-shadow: 0 0 0 0.125em rgba(50,115,226,.25);
     }
+
+    .source.selected {
+      box-shadow: 0 0 0 0.125em white;
+    }
   </style>
 </head>
 
 <body>
-  <section class="section">
-    <div class="container" style="display: flex; flex-direction: row; justify-content: space-around;">
-      <img src="./src/img/icons/icon.png" alt="icue-ambilight" style="height: 96px; margin: 16px;">
-      <div style="width: 100%; display: flex; flex-direction: column; justify-content: center; height: 96px;">
-        <h1 class="title is-3">
+  <div class="columns">
+    <div class="column is-2"  style="min-width: 240px">
+      <nav class="panel">
+        <p class="panel-heading">
           iCue Ambilight
-        </h1>
-        <p class="subtitle is-5">
-          Synchronise your iCue compatible devices with the content displayed on your screen.
         </p>
-      </div>
+        <a class="panel-block is-active" id="sourcesContainerButton">
+          <span class="panel-icon">
+            <i class="fas fa-desktop" aria-hidden="true"></i>
+          </span>
+          Sources
+        </a>
+        <a class="panel-block" id="layoutContainerButton">
+          <span class="panel-icon">
+            <i class="fas fa-layer-group" aria-hidden="true"></i>
+          </span>
+          Layout
+        </a>
+        <a class="panel-block" id="captureContainerButton">
+          <span class="panel-icon">
+            <i class="fas fa-video" aria-hidden="true"></i>
+          </span>
+          Capture Previews
+        </a>
+        <a class="panel-block" id="settingsContainerButton">
+          <span class="panel-icon">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+          </span>
+          Settings
+        </a>
+      </nav>
     </div>
-    <div class="container" style="display: flex; flex-direction: row; justify-content: flex-start;">
-      <a id="git"><img src="https://git-scm.com/images/logos/downloads/Git-Icon-White.png" style="height: 48px; margin: 8px;"></a>
-    </div>
-  </section>
-  <!--<section class="section">
-    <div class="container">
-      <h1 class="title is-5">
-        Control
-      </h1>
-      <button id="refreshSources" class="button is-rounded">Refresh Sources</button>
-      <button id="startAmbilight" class="button is-rounded">Start Ambilight</button>
-    </div>
-  </section>-->
-  <section class="section">
-    <div class="container">
-      <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button></h1>
-      <div id="sources">
+    <div class="column">
+      <section class="section" id="sourcesContainer">
+        <div class="container">
+          <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button></h1>
+          <div id="sources" style="display: flex; flex-wrap: wrap;">
+            
+          </div>
+        </div>
+      </section>
+      <section class="section is-hidden" id="layoutContainer">
         
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <h1 class="title is-5">
-        Capture previews <button class="button is-rounded is-small" onclick="document.getElementById('captures').classList.toggle('is-hidden')">Hide to lower CPU Usage</button>
-      </h1>
-      <div id="captures" class="columns">
-        <div class="column">
-          <p><b>Video capture :</b></p>
-          <video id="video" autoplay controls></video>
+      </section>
+      <section class="section is-hidden"  id="captureContainer">
+        <div class="container">
+          <h1 class="title is-5">
+            Capture previews
+          </h1>
+          <div id="captures" class="columns">
+            <div class="column">
+              <p><b>Video capture :</b></p>
+              <video id="video" autoplay controls></video>
+            </div>
+            <div class="column">
+              <p><b>Leds Canvas :</b></p>
+              <p>Before black bar detection :</p>
+              <canvas id="c2" style="height: auto; width: 100%;"></canvas>
+              <p>After black bar detection :</p>
+              <canvas id="c1" style="height: auto; width: 100%;"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="column">
-          <p><b>Leds Canvas :</b></p>
-          <p>Before black bar detection :</p>
-          <canvas id="c2" style="height: auto; width: 100%;"></canvas>
-          <p>After black bar detection :</p>
-          <canvas id="c1" style="height: auto; width: 100%;"></canvas>
+      </section>
+      <section class="section is-hidden" id="settingsContainer">
+        <div class="container">
+          <h1 class="title is-5">Devices Connected</h1>
+          <div class="box" style="width: auto;">
+            <div id="devices" class="content">
+                  
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
-  </section>
+  </div>
   <script>
     require('./renderer.js')
   </script>
