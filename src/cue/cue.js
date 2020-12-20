@@ -15,15 +15,34 @@ const cue = {
 
     this.info = this.getDevicesInfo()
 
+    console.log(this.info)
+
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
         this.positions[i] = sdk.CorsairGetLedPositionsByDeviceIndex(i);
+        console.log(this.positions[i]);
       }
     }
 
-    console.log(this.positions)
+    this.devices = this.parseDevicesInfo(this.info, this.positions);
 
     amibilight.init(this.positions)
+  },
+
+  parseDevicesInfo: function(info, positions) {
+    const devices = [];
+
+    for (let i = 0; i < info.length; i++) {
+      devices[i] = {};
+      const device = devices[i];
+      
+      device.model = info[i].model;
+      device.ledsCount = info[i].ledsCount;
+      device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
+      device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+    }
+
+    return devices;
   },
 
   getMaxDefinition: function () {
@@ -34,12 +53,12 @@ const cue = {
 
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
-        positions = sdk.CorsairGetLedPositionsByDeviceIndex(i);
-        let newX = positions.reduce((acc, curr) => Math.max(curr.left, acc), 0);
+        position = sdk.CorsairGetLedPositionsByDeviceIndex(i);
+        let newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0);
         if (newX > extremums.maxX) {
           extremums.maxX = newX;
         }
-        let newY = positions.reduce((acc, curr) => Math.max(curr.top, acc), 0);
+        let newY = position.reduce((acc, curr) => Math.max(curr.top, acc), 0);
         if (newY > extremums.maxY) {
           extremums.maxY = newY + 1;
         }

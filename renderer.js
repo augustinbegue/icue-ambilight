@@ -12,7 +12,6 @@ function refreshSources() {
   getSources().then((sources) => {
     sourcesEl.innerHTML = '';
     for (const i in sources) {
-      console.log(i);
       sources[i].thumbnail = sources[i].thumbnail.toDataURL();
       sourcesEl.innerHTML += `
       <div id="${i}" class="source box ${i == 0 ? 'selected' : ''}" style="margin: 16px;">
@@ -25,7 +24,8 @@ function refreshSources() {
       </div>`;
     }
 
-    startCapture(sources[0])
+    startCapture(sources[0]);
+    refreshLayout(sources[0]);
 
     const sourcesButtons = document.getElementById('sources').childNodes;
     
@@ -33,6 +33,7 @@ function refreshSources() {
       button.addEventListener('click', (event) => {
         event.stopPropagation()
         startCapture(sources[button.id]);
+        refreshLayout(sources[button.id]);
         processor.doLoad();
 
         sourcesButtons.forEach((el, i) => {
@@ -52,7 +53,7 @@ function refreshSources() {
 }
 
 function refreshDeviceInfo() {
-  const info = cue.getDevicesInfo()
+  const info = cue.devices;
 
   devicesEl = document.getElementById("devices")
 
@@ -63,6 +64,31 @@ function refreshDeviceInfo() {
     devicesEl.innerHTML += `
     <p>${i+1} - <strong>${device.model}</strong><br>Leds: ${device.ledsCount}</p>
     `;
+  });
+}
+
+function refreshLayout(source) {
+  const devices = cue.devices;
+  const maxDef = cue.getMaxDefinition()
+  
+  devices.forEach((device, i) => {
+    let canvas = document.createElement("canvas");
+    canvas.id = "deviceLayout"+i;
+
+    layoutEl.appendChild(canvas);
+
+    canvas.height = device.sizeY;
+    canvas.width = device.sizeX;
+    canvas.style.opacity = '0.5';
+    canvas.style.margin = '4px';
+
+    canvasCtx = canvas.getContext("2d");
+    canvasCtx.rect(0, 0, canvas.width, canvas.height);
+    canvasCtx.fillStyle = 'red';
+    canvasCtx.fill();
+    canvasCtx.font = '16px sans-serif'
+    canvasCtx.fillStyle = 'black';
+    canvasCtx.fillText(device.model, 2, 18, canvas.width);
   });
 }
 
