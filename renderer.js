@@ -25,7 +25,6 @@ function refreshSources() {
     }
 
     startCapture(sources[0]);
-    refreshLayout(sources[0]);
 
     const sourcesButtons = document.getElementById('sources').childNodes;
     
@@ -33,7 +32,6 @@ function refreshSources() {
       button.addEventListener('click', (event) => {
         event.stopPropagation()
         startCapture(sources[button.id]);
-        refreshLayout(sources[button.id]);
         processor.doLoad();
 
         sourcesButtons.forEach((el, i) => {
@@ -62,34 +60,57 @@ function refreshDeviceInfo() {
       devicesEl.innerHTML += `<hr>`
     }
     devicesEl.innerHTML += `
-    <p>${i+1} - <strong>${device.model}</strong><br>Leds: ${device.ledsCount}</p>
+      <p>${i+1} - <strong>${device.model}</strong><br>Leds: ${device.ledsCount}</p>
     `;
   });
 }
 
-function refreshLayout(source) {
-  const devices = cue.devices;
-  const maxDef = cue.getMaxDefinition()
+function displayLayout() {
+  const maxDef = cue.getMaxDefinition();
+  const display = document.getElementById("display");
   
-  devices.forEach((device, i) => {
-    let canvas = document.createElement("canvas");
-    canvas.id = "deviceLayout"+i;
+  let displayCanvas = document.createElement("canvas");
+  displayCanvas.id = "displayCanvas";
 
-    layoutEl.appendChild(canvas);
+  display.appendChild(displayCanvas);
+  
+  displayCanvas.height = maxDef.maxY;
+  displayCanvas.width = maxDef.maxX;
+  displayCanvas.style.margin = '4px';
 
-    canvas.height = device.sizeY;
-    canvas.width = device.sizeX;
-    canvas.style.opacity = '0.5';
-    canvas.style.margin = '4px';
+  displayCanvas.style.height = "auto";
+  displayCanvas.style.width = "100%";
 
-    canvasCtx = canvas.getContext("2d");
-    canvasCtx.rect(0, 0, canvas.width, canvas.height);
-    canvasCtx.fillStyle = 'red';
-    canvasCtx.fill();
-    canvasCtx.font = '16px sans-serif'
-    canvasCtx.fillStyle = 'black';
-    canvasCtx.fillText(device.model, 2, 18, canvas.width);
+  canvasCtx = displayCanvas.getContext("2d");
+  canvasCtx.rect(0, 0, displayCanvas.width, displayCanvas.height);
+  canvasCtx.fillStyle = 'white';
+  canvasCtx.fill();
+
+  cue.devices.forEach((device, i) => {
+    canvasCtx.fillStyle = `rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255}, 100)`;
+    canvasCtx.fillRect(0, 0, device.sizeX, device.sizeY);
+
+    layoutEl = document.getElementById("layout");
+    layoutEl.innerHTML += `
+    <div id="deviceForm${i}">
+      <p style="margin: 4px; background: rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255});">${device.model}</p>
+      <div class="control"  style="display: flex; flex-wrap: wrap;">
+        <input class="input is-rounded is-small" type="text" name="device${i}x1" id="device${i}x1"
+               placeholder="x1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x1}">
+        <input class="input is-rounded is-small" type="text" name="device${i}y1" id="device${i}y1"
+               placeholder="y1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y1}">
+        <input class="input is-rounded is-small" type="text" name="device${i}x2" id="device${i}x2"
+               placeholder="x2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x2}">
+        <input class="input is-rounded is-small" type="text" name="device${i}y2" id="device${i}y2"
+               placeholder="y2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y2}">
+      </div>
+    </div>
+    `
   });
+}
+
+function updateLayout(index, x1, y1, x2, y2) {
+
 }
 
 if (!localStorage.getItem('config')) {
@@ -101,6 +122,7 @@ if (!localStorage.getItem('config')) {
 cue.init();
 refreshSources();
 refreshDeviceInfo();
+displayLayout();
 processor.doLoad();
 new Panels();
 

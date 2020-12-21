@@ -40,6 +40,10 @@ const cue = {
       device.ledsCount = info[i].ledsCount;
       device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
       device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+      device.x1 = 0;
+      device.y1 = 0;
+      device.x2 = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
+      device.y2 = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
     }
 
     return devices;

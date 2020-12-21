@@ -8,8 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="src/css/bulmaswatch.min.css">
   <style>
-    .source:hover, .source:focus, .selected {
-      box-shadow: 0 0 0 0.125em rgba(50,115,226,.25);
+    .source:hover,
+    .source:focus,
+    .selected {
+      box-shadow: 0 0 0 0.125em rgba(50, 115, 226, .25);
     }
 
     .source.selected {
@@ -20,7 +22,7 @@
 
 <body>
   <div class="columns">
-    <div class="column is-2"  style="min-width: 240px">
+    <div class="column is-2" style="min-width: 240px">
       <nav class="panel">
         <p class="panel-heading">
           iCue Ambilight
@@ -54,21 +56,25 @@
     <div class="column">
       <section class="section" id="sourcesContainer">
         <div class="container">
-          <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button></h1>
+          <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button>
+          </h1>
           <div id="sources" style="display: flex; flex-wrap: wrap;">
-            
+
           </div>
         </div>
       </section>
       <section class="section is-hidden" id="layoutContainer">
         <div class="container">
           <h1 class="title is-5" id="refreshSources">Layout</h1>
-          <div id="layout" style="display: flex; flex-wrap: wrap;">
+          <div id="display">
+
+          </div>
+          <div id="layout">
             
           </div>
         </div>
       </section>
-      <section class="section is-hidden"  id="captureContainer">
+      <section class="section is-hidden" id="captureContainer">
         <div class="container">
           <h1 class="title is-5">
             Capture previews
@@ -93,7 +99,7 @@
           <h1 class="title is-5">Devices Connected</h1>
           <div class="box" style="width: auto;">
             <div id="devices" class="content">
-                  
+
             </div>
           </div>
         </div>
