@@ -1,0 +1,131 @@
+#titlebar {
+    display: block;
+    position: fixed;
+    height: 32px;
+    width: 100%;
+    -webkit-app-region: drag;
+    background-color: #242424
+}
+
+#titlebar #drag-region {
+    display: grid;
+    grid-template-columns: auto 138px;
+}
+
+#window-title {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+#window-title span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1.5 !important;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 12px;
+}
+
+#main {
+    width: 100%;
+    padding: 0px;
+    height: 100%;
+    margin-top: 32px;
+    overflow-y: auto;
+}
+
+#titlebar {
+    color: #FFF;
+}
+
+#window-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 46px);
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+
+#window-controls .button-titlebar {
+    grid-row: 1 / span 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#min-button {
+    grid-column: 1;
+}
+
+#max-button, #restore-button {
+    grid-column: 2;
+}
+
+#close-button {
+    grid-column: 3;
+}
+
+@media (-webkit-device-pixel-ratio: 1.5), (device-pixel-ratio: 1.5), (-webkit-device-pixel-ratio: 2), (device-pixel-ratio: 2), (-webkit-device-pixel-ratio: 3), (device-pixel-ratio: 3) {
+    #window-controls .icon-titlebar {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+#window-controls {
+    -webkit-app-region: no-drag;
+}
+
+#window-controls .button-titlebar {
+    user-select: none;
+}
+
+#window-controls .button-titlebar:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#window-controls .button-titlebar:active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#close-button:hover {
+    background: #E81123 !important;
+}
+
+#close-button:active {
+    background: #F1707A !important;
+}
+
+#close-button:active .icon-titlebar {
+    filter: invert(1);
+}
+
+#restore-button {
+    display: none !important;
+}
+
+.maximized #titlebar {
+    width: 100%;
+    padding: 0;
+}
+
+.maximized #window-title {
+    margin-left: 12px;
+}
+
+.maximized #restore-button {
+    display: flex !important;
+}
+
+.maximized #max-button {
+    display: none;
+}

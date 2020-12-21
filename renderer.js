@@ -6,6 +6,55 @@ const { cue } = require("./src/cue/cue");
 const { getSources, startCapture } = require("./src/capture");
 const { Panels } = require("./src/gui/Panels");
 
+const win = remote.getCurrentWindow(); /* Note this is different to the
+html global `window` variable */
+
+// When document has loaded, initialise
+document.onreadystatechange = (_event) => {
+    if (document.readyState == "complete") {
+        handleWindowControls();
+    }
+};
+
+window.onbeforeunload = (_event) => {
+    /* If window is reloaded, remove win event listeners
+    (DOM element listeners get auto garbage collected but not
+    Electron win listeners as the win is not dereferenced unless closed) */
+    win.removeAllListeners();
+}
+
+function handleWindowControls() {
+    // Make minimise/maximise/restore/close buttons work when they are clicked
+    document.getElementById('min-button').addEventListener("click", _event => {
+        win.minimize();
+    });
+
+    document.getElementById('max-button').addEventListener("click", _event => {
+        win.maximize();
+    });
+
+    document.getElementById('restore-button').addEventListener("click", _event => {
+        win.unmaximize();
+    });
+
+    document.getElementById('close-button').addEventListener("click", _event => {
+        win.close();
+    });
+
+    // Toggle maximise/restore buttons when maximisation/unmaximisation occurs
+    toggleMaxRestoreButtons();
+    win.on('maximize', toggleMaxRestoreButtons);
+    win.on('unmaximize', toggleMaxRestoreButtons);
+
+    function toggleMaxRestoreButtons() {
+        if (win.isMaximized()) {
+            document.body.classList.add('maximized');
+        } else {
+            document.body.classList.remove('maximized');
+        }
+    }
+}
+
 function refreshSources() {
   const sourcesEl = document.getElementById('sources')
 
@@ -34,7 +83,7 @@ function refreshSources() {
         startCapture(sources[button.id]);
         processor.doLoad();
 
-        sourcesButtons.forEach((el, i) => {
+        sourcesButtons.forEach((_el, i) => {
           let but = document.getElementById(i);
 
           if (but) {
@@ -95,13 +144,13 @@ function displayLayout() {
     <div id="deviceForm${i}">
       <p style="margin: 4px; background: rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255});">${device.model}</p>
       <div class="control"  style="display: flex; flex-wrap: wrap;">
-        <input class="input is-rounded is-small" type="text" name="device${i}x1" id="device${i}x1"
+        <input class="input is-small" type="text" name="device${i}x1" id="device${i}x1"
                placeholder="x1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x1}">
-        <input class="input is-rounded is-small" type="text" name="device${i}y1" id="device${i}y1"
+        <input class="input is-small" type="text" name="device${i}y1" id="device${i}y1"
                placeholder="y1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y1}">
-        <input class="input is-rounded is-small" type="text" name="device${i}x2" id="device${i}x2"
+        <input class="input is-small" type="text" name="device${i}x2" id="device${i}x2"
                placeholder="x2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x2}">
-        <input class="input is-rounded is-small" type="text" name="device${i}y2" id="device${i}y2"
+        <input class="input is-small" type="text" name="device${i}y2" id="device${i}y2"
                placeholder="y2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y2}">
       </div>
     </div>
@@ -109,7 +158,7 @@ function displayLayout() {
   });
 }
 
-function updateLayout(index, x1, y1, x2, y2) {
+function updateLayout(_index, _x1, _y1, _x2, _y2) {
 
 }
 

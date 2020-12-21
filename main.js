@@ -9,6 +9,7 @@ function init() {
   win = new BrowserWindow({
     width: 1280,
     height: 720,
+    frame: false,
     webPreferences: {
       backgroundThrottling: false,
       nodeIntegration: true

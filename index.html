@@ -7,7 +7,15 @@
   <script src="https://kit.fontawesome.com/d733869e4d.js" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="src/css/bulmaswatch.min.css">
+  <link rel="stylesheet" href="src/css/titlebar.css">
   <style>
+    html, body {
+      min-width: 500px;
+      height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+    }
+    
     .source:hover,
     .source:focus,
     .selected {
@@ -17,16 +25,66 @@
     .source.selected {
       box-shadow: 0 0 0 0.125em white;
     }
+
+    .panel-block, .panel-block:first-child {
+      border-bottom: none;
+      border-right: none;
+      border-top: none;
+    }
+
+    .app-container {
+      display: flex;
+    }
+
+    .navbar-container {
+      width: 240px;
+      margin: 0px;
+      padding-top: 0px;
+      padding-right: 0px;
+      background-color: #242424;
+    }
+
+    .content-container {
+      overflow-x: scroll;
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
-  <div class="columns">
-    <div class="column is-2" style="min-width: 240px">
-      <nav class="panel">
-        <p class="panel-heading">
-          iCue Ambilight
-        </p>
+  <header id="titlebar">
+    <div id="window-title">
+      <span>iCue Ambilight<span>
+    </div>
+    <div id="window-controls">
+      <div class="button-titlebar" id="min-button">
+        <img class="icon-titlebar"
+          srcset="./src/img/icons/min-w-10.png 1x, ./src/img/icons/min-w-12.png 1.25x, ./src/img/icons/min-w-15.png 1.5x, ./src/img/icons/min-w-15.png 1.75x, icons/min-w-20.png 2x, ./src/img/icons/min-w-20.png 2.25x, ./src/img/icons/min-w-24.png 2.5x, ./src/img/icons/min-w-30.png 3x, ./src/img/icons/min-w-30.png 3.5x"
+          draggable="false" />
+      </div>
+
+      <div class="button-titlebar" id="max-button">
+        <img class="icon-titlebar"
+          srcset="./src/img/icons/max-w-10.png 1x, ./src/img/icons/max-w-12.png 1.25x, ./src/img/icons/max-w-15.png 1.5x, ./src/img/icons/max-w-15.png 1.75x, icons/max-w-20.png 2x, ./src/img/icons/max-w-20.png 2.25x, ./src/img/icons/max-w-24.png 2.5x, ./src/img/icons/max-w-30.png 3x, ./src/img/icons/max-w-30.png 3.5x"
+          draggable="false" />
+      </div>
+
+      <div class="button-titlebar" id="restore-button">
+        <img class="icon-titlebar"
+          srcset="./src/img/icons/restore-w-10.png 1x, ./src/img/icons/restore-w-12.png 1.25x, ./src/img/icons/restore-w-15.png 1.5x, ./src/img/icons/restore-w-15.png 1.75x, ./src/img/icons/restore-w-20.png 2x, ./src/img/icons/restore-w-20.png 2.25x, ./src/img/icons/restore-w-24.png 2.5x, ./src/img/icons/restore-w-30.png 3x, ./src/img/icons/restore-w-30.png 3.5x"
+          draggable="false" />
+      </div>
+
+      <div class="button-titlebar" id="close-button">
+        <img class="icon-titlebar"
+          srcset="./src/img/icons/close-w-10.png 1x, ./src/img/icons/close-w-12.png 1.25x, ./src/img/icons/close-w-15.png 1.5x, ./src/img/icons/close-w-15.png 1.75x, ./src/img/icons/close-w-20.png 2x, ./src/img/icons/close-w-20.png 2.25x, ./src/img/icons/close-w-24.png 2.5x, icons/close-w-30.png 3x, ./src/img/icons/close-w-30.png 3.5x"
+          draggable="false" />
+      </div>
+    </div>
+  </header>
+  <div id="main" class="app-container">
+    <div class="navbar-container">
+      <nav class="panel" style="background-color: #242424">
         <a class="panel-block is-active" id="sourcesContainerButton">
           <span class="panel-icon">
             <i class="fas fa-desktop" aria-hidden="true"></i>
@@ -53,7 +111,7 @@
         </a>
       </nav>
     </div>
-    <div class="column">
+    <div class="content-container">
       <section class="section" id="sourcesContainer">
         <div class="container">
           <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button>
@@ -70,7 +128,7 @@
 
           </div>
           <div id="layout">
-            
+
           </div>
         </div>
       </section>
