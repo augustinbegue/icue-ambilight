@@ -15,12 +15,9 @@ const cue = {
 
     this.info = this.getDevicesInfo()
 
-    console.log(this.info)
-
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
         this.positions[i] = sdk.CorsairGetLedPositionsByDeviceIndex(i);
-        console.log(this.positions[i]);
       }
     }
 
@@ -32,6 +29,8 @@ const cue = {
   parseDevicesInfo: function(info, positions) {
     const devices = [];
 
+    let previousDevices = JSON.parse(localStorage.getItem("devices"));
+
     for (let i = 0; i < info.length; i++) {
       devices[i] = {};
       const device = devices[i];
@@ -40,10 +39,19 @@ const cue = {
       device.ledsCount = info[i].ledsCount;
       device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
       device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
-      device.x1 = 0;
-      device.y1 = 0;
-      device.x2 = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
-      device.y2 = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+      
+      
+      if (previousDevices && previousDevices[i] && previousDevices[i].model == device.model) {
+        device.x1 = previousDevices[i].x1;
+        device.y1 = previousDevices[i].y1;
+        device.x2 = previousDevices[i].x2;
+        device.y2 = previousDevices[i].y2;
+      } else {
+        device.x1 = 0;
+        device.y1 = 0;
+        device.x2 = device.sizeX;
+        device.y2 = device.sizeY;
+      }
     }
 
     return devices;
