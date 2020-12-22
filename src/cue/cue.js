@@ -23,7 +23,9 @@ const cue = {
 
     this.devices = this.parseDevicesInfo(this.info, this.positions);
 
-    amibilight.init(this.positions)
+    console.log(this.positions)
+
+    amibilight.init(this.positions, this.devices)
   },
 
   parseDevicesInfo: function(info, positions) {
@@ -39,7 +41,6 @@ const cue = {
       device.ledsCount = info[i].ledsCount;
       device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
       device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
-      
       
       if (previousDevices && previousDevices[i] && previousDevices[i].model == device.model) {
         device.x1 = previousDevices[i].x1;
