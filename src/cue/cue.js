@@ -36,6 +36,12 @@ const cue = {
     for (let i = 0; i < info.length; i++) {
       devices[i] = {};
       const device = devices[i];
+
+      if (previousDevices && previousDevices[i] && !previousDevices[i].enabled) {
+        device.enabled = false;
+      } else {
+        device.enabled = true;
+      }
       
       device.model = info[i].model;
       device.ledsCount = info[i].ledsCount;

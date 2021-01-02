@@ -20,15 +20,15 @@ const amibilight = {
 
   updateLeds: function () {
     for (let i = 0; i < this.positions.length; i++) {
-      sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
-      sdk.CorsairSetLedsColorsFlushBuffer();
+      if (this.devices[i].enabled) {
+        sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
+        sdk.CorsairSetLedsColorsFlushBuffer(); 
+      } else {
+        sdk
+      }
     }
   },
 
-  // Need to scale the coordinates according to the new rectangle.
-  // 
-  // 
-  // 
   getColors: function (index, positions) {
     const device = this.devices[index];
 
@@ -37,7 +37,7 @@ const amibilight = {
      
     return colors = positions.map((p) => {
       const imgData = this.ctx1.getImageData(device.x1 + (p.left * xScale), device.y1 + (p.top * yScale), device.x1 + (p.width * xScale), device.y1 + (p.width * yScale)).data;
-
+      
       return {
         ledId: p.ledId,
         r: imgData[0],

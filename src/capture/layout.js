@@ -29,8 +29,12 @@ function initLayout() {
 
     layoutEl = document.getElementById("layout");
     layoutEl.innerHTML += `
-    <div id="deviceForm${i}">
-      <p style="margin: 4px; background: rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255});">${device.model}</p>
+    <div id="deviceForm${i}" class="box" style="margin: 8px; padding: 16px; background: rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255});">
+      <p>${device.model}</p>
+      <label class="checkbox" style="color: white;">
+        <input type="checkbox" name="device${i}enable" id="device${i}enable" ${device.enabled ? `checked` : ``}>
+        Enable
+      </label>
       <div class="control"  style="display: flex; flex-wrap: wrap;">
         <input class="input is-small" type="text" name="device${i}x1" id="device${i}x1"
                placeholder="x1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x1}">
@@ -41,8 +45,7 @@ function initLayout() {
         <input class="input is-small" type="text" name="device${i}y2" id="device${i}y2"
                placeholder="y2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y2}">
       </div>
-    </div>
-    `;
+    </div>`;
   });
 
   cue.devices.forEach((_device, i) => {
@@ -50,29 +53,33 @@ function initLayout() {
     let x2In = document.getElementById(`device${i}x2`);
     let y1In = document.getElementById(`device${i}y1`);
     let y2In = document.getElementById(`device${i}y2`);
+    let checkbox = document.getElementById(`device${i}enable`);
+
 
     const handler = function (e) {
       x1In.value > displayCanvas.width ? x1In.value = displayCanvas.width : x1In.value;
       x2In.value > displayCanvas.width ? x2In.value = displayCanvas.width : x2In.value;
       y1In.value > displayCanvas.height ? y1In.value = displayCanvas.height : y1In.value;
       y2In.value > displayCanvas.height ? y2In.value = displayCanvas.height : y2In.value;
-      
-      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value)
+
+      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkbox.checked)
     };
 
     x1In.onchange = handler;
     x2In.onchange = handler;
     y1In.onchange = handler;
     y2In.onchange = handler;
+    checkbox.onchange = handler;
   });
 }
 exports.initLayout = initLayout;
 
-function updateLayout(i, x1, y1, x2, y2) {
+function updateLayout(i, x1, y1, x2, y2, enabled) {
   cue.devices[i].x1 = parseInt(x1);
   cue.devices[i].x2 = parseInt(x2);
   cue.devices[i].y1 = parseInt(y1);
   cue.devices[i].y2 = parseInt(y2);
+  cue.devices[i].enabled = enabled;
 
   localStorage.setItem("devices", JSON.stringify(cue.devices));
 
@@ -84,9 +91,11 @@ function updateCanvas() {
   canvasCtx.fillRect(0, 0, displayCanvas.width, displayCanvas.height);
 
   cue.devices.forEach((device, i) => {
-    canvasCtx.globalAlpha = 0.6;
-    canvasCtx.fillStyle = `rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255}, 10)`;
-    canvasCtx.fillRect(device.x1, device.y1, device.x2, device.y2);
-    canvasCtx.globalAlpha = 1;
+    if (device.enabled) {
+      canvasCtx.globalAlpha = 0.6;
+      canvasCtx.fillStyle = `rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255}, 10)`;
+      canvasCtx.fillRect(device.x1, device.y1, device.x2, device.y2);
+      canvasCtx.globalAlpha = 1;
+    }
   });
 }
