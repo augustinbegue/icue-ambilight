@@ -1,4 +1,4 @@
-const { cue } = require('./cue')
+const { cue } = require('../cue/cue')
 
 const processor = {
   timerCallback: function () {
@@ -21,10 +21,10 @@ const processor = {
     this.c1.height = maxDef.maxY
     this.ctx1 = this.c1.getContext("2d");
 
-    this.c2 = document.getElementById("c2");
+    /*this.c2 = document.getElementById("c2");
     this.c2.width = maxDef.maxX
     this.c2.height = maxDef.maxY
-    this.ctx2 = this.c2.getContext("2d");
+    this.ctx2 = this.c2.getContext("2d");*/
 
     let self = this;
 
@@ -34,15 +34,16 @@ const processor = {
       self.timerCallback();
     }, false);
 
-    this.blackBars = [0, 0]
+    /*this.blackBars = [0, 0]
     setInterval(() => {
       this.checkForBlackBars()
-    }, 1000)
+    }, 1000)*/
   },
 
   computeFrame: function () {
-    this.ctx2.drawImage(this.video, 0, 0, this.width, this.height)
-    sx = 0;
+    // this.ctx2.drawImage(this.video, 0, 0, this.width, this.height)
+    this.ctx1.drawImage(this.video, 0, 0, this.width, this.height)
+    /*sx = 0;
     sy = ((this.width * (9 / 16))/this.height) * this.blackBars[0]; // (Original Height / Canvas height) * blackbars height -> adapt mesured height to video capture real height
     sLargeur = this.width;
     sHauteur = this.width*(9 / 16) - ((this.width*(9 / 16)) / this.height) * (this.blackBars[0] + this.blackBars[1]);
@@ -51,7 +52,7 @@ const processor = {
     dLargeur = this.width;
     dHauteur = this.height;
     this.ctx1.drawImage(this.video, sx, sy, sLargeur, sHauteur, dx, dy, dLargeur, dHauteur)
-    return;
+    return;*/
   },
 
   checkForBlackBars: function () { // Check for how many pixels deep the image is black -> black bar height

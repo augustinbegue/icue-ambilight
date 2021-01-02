@@ -1,4 +1,4 @@
-const { processor } = require("../cue/processor");
+const { processor } = require("./processor");
 const { cue } = require("../cue/cue");
 const { getSources, startCapture } = require(".");
 

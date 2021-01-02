@@ -1,13 +1,24 @@
 const { remote, shell } = require('electron');
 const mainProcess = remote.require('./main.js');
 
-const { processor } = require("./src/cue/processor");
+const { processor } = require("./src/capture/processor");
 const { cue } = require("./src/cue/cue");
 const { Panels } = require("./src/gui/Panels");
 const { refreshSources, refreshDeviceInfo } = require("./src/capture/sources");
-const { initLayout } = require("./src/capture/layout");
+const { initLayout } = require("./src/cue/layout");
 
 const win = remote.getCurrentWindow(); /* Note this is different to the html global `window` variable */
+
+if (!localStorage.getItem('config')) {
+  localStorage.setItem('config', `${JSON.stringify({
+    refreshrate: 30,
+    disabledColor: {
+      r: 0,
+      g: 0,
+      b: 0
+    }
+  })}`)
+}
 
 function handleWindowControls() {
   // Make minimise/maximise/restore/close buttons work when they are clicked
@@ -54,12 +65,6 @@ window.onbeforeunload = (_event) => {
   (DOM element listeners get auto garbage collected but not
   Electron win listeners as the win is not dereferenced unless closed) */
   win.removeAllListeners();
-}
-
-if (!localStorage.getItem('config')) {
-  localStorage.setItem('config', `${JSON.stringify({
-    refreshrate: 30,
-  })}`)
 }
 
 cue.init();

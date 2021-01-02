@@ -15,22 +15,29 @@ const amibilight = {
     let self = this;
     setInterval(function () {
       self.updateLeds();
-    }, 1000 / config.refreshrate);
+    }, 1000 / config?.refreshrate ? config.refreshrate : 30);
   },
 
   updateLeds: function () {
     for (let i = 0; i < this.positions.length; i++) {
-      if (this.devices[i].enabled) {
-        sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
-        sdk.CorsairSetLedsColorsFlushBuffer(); 
-      } else {
-        sdk
-      }
+      sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
+      sdk.CorsairSetLedsColorsFlushBuffer();
     }
   },
 
   getColors: function (index, positions) {
     const device = this.devices[index];
+
+    if (!device.enabled) {
+      return colors = positions.map((p) => {
+        return {
+          ledId: p.ledId,
+          r: config.disabledColor.r,
+          g: config.disabledColor.g,
+          b: config.disabledColor.b
+        };
+      }); 
+    }
 
     const xScale = (device.x2 / device.sizeX);
     const yScale = (device.y2 / device.sizeY);

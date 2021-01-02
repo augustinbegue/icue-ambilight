@@ -1,4 +1,4 @@
-const { cue } = require("../cue/cue");
+const { cue } = require("./cue");
 
 let displayCanvas = document.createElement("canvas");
 exports.displayCanvas = displayCanvas;
