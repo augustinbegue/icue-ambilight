@@ -1,3 +1,9 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Tagueo/icue-ambilight?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/total?style=flat-square)
+![GitHub](https://img.shields.io/github/license/Tagueo/icue-ambilight?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/Tagueo/icue-ambilight?style=flat-square)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/Tagueo/icue-ambilight?color=green&style=flat-square)
+
 # icue-ambilight
 Synchronise your iCue compatible devices with the content displayed on your screen.
 
