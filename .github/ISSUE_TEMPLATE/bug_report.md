@@ -10,6 +10,8 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Please check that you have enabled the SDK in _ICUE_ (see the readme) before posting an issue**
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
