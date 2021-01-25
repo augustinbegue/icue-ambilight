@@ -1,3 +1,8 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Tagueo/icue-ambilight?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/total?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/latest/total?style=flat-square)
+![GitHub](https://img.shields.io/github/license/Tagueo/icue-ambilight?style=flat-square)
+
 # icue-ambilight
 Synchronise your iCue compatible devices with the content displayed on your screen.
 
@@ -21,6 +26,10 @@ Open iCue, then go into the settings tab.
 Check the highlighted box and then, restart icue-ambilight for your changes to be taken into account
 
 ### For developpers :
+![GitHub issues](https://img.shields.io/github/issues/Tagueo/icue-ambilight?style=flat-square)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/Tagueo/icue-ambilight?color=green&style=flat-square)
+![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Tagueo/icue-ambilight/latest?style=flat-square)
+
 #### Build instructions :
 - Make sure you have installed the prerequisites for the [cue-sdk](https://github.com/CorsairOfficial/cue-sdk-node) to work properly.
 - Install the required packages with ``npm i --dev``
