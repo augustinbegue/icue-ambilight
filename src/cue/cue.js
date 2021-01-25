@@ -45,8 +45,13 @@ const cue = {
       
       device.model = info[i].model;
       device.ledsCount = info[i].ledsCount;
-      device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
-      device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+      if (positions[i]) {
+        device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
+        device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+      } else {
+        device.sizeX = 1
+        device.sizeY = 1
+      }
       
       if (previousDevices && previousDevices[i] && previousDevices[i].model == device.model) {
         device.x1 = previousDevices[i].x1;

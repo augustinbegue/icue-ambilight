@@ -52,13 +52,15 @@ function refreshDeviceInfo() {
 
   devicesEl = document.getElementById("devices");
 
-  info.forEach((device, i) => {
-    if (i != 0) {
-      devicesEl.innerHTML += `<hr>`;
-    }
-    devicesEl.innerHTML += `
-      <p>${i + 1} - <strong>${device.model}</strong><br>Leds: ${device.ledsCount}</p>
-    `;
-  });
+  if (info && info.length > 0) {
+    info.forEach((device, i) => {
+      if (i != 0) {
+        devicesEl.innerHTML += `<hr>`;
+      }
+      devicesEl.innerHTML += `
+        <p>${i + 1} - <strong>${device.model}</strong><br>Leds: ${device.ledsCount}</p>
+      `;
+    });
+  }
 }
 exports.refreshDeviceInfo = refreshDeviceInfo;
