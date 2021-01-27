@@ -1,6 +1,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Tagueo/icue-ambilight?style=flat-square)
-![GitHub all releases](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/total?style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/latest/total?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/total?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Tagueo/icue-ambilight/build-release?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/Tagueo/icue-ambilight?style=flat-square)
 
 # icue-ambilight
