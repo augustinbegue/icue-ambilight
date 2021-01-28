@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional Information (please complete):**
  - Version : (release you used, if not the latest, please try to reproduce the bug with it)
- - Screenshot/paste of the logs :  (press Ctrl+Maj+I to access them)
+ - Screenshot/paste of the logs :  (press Ctrl+Shift+I to access them)
  - Screenshot of the connected devices in **icue-ambilight**: (Settings Tab)
  - Screenshot of the connected devices in **iCue**:
 
