@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, nativeImage } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -14,7 +14,7 @@ function init() {
       backgroundThrottling: false,
       nodeIntegration: true
     },
-    icon: './src/img/icons/icon.png'
+    icon: nativeImage.createFromPath('./src/img/icons/icon.png')
   })
 
   // and load the index.html of the app.
