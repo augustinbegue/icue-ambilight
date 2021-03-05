@@ -45,4 +45,7 @@ html, body {
   #error-container {
     padding: 8px;
     background-color: #d12e2e;
+    display: none;
+    justify-content: baseline;
+    align-items: center;
   }

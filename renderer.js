@@ -9,7 +9,9 @@ const { initLayout } = require("./src/cue/layout");
 
 const win = remote.getCurrentWindow(); /* Note this is different to the html global `window` variable */
 
-if (!localStorage.getItem('config')) {
+let config = localStorage.getItem('config')
+
+if (!config || !config.disabledColor || !config.refreshrate) {
   localStorage.setItem('config', `${JSON.stringify({
     refreshrate: 30,
     disabledColor: {
@@ -18,6 +20,23 @@ if (!localStorage.getItem('config')) {
       b: 0
     }
   })}`)
+}
+
+/**
+ * Displays the error modal on the screen
+ * @param {string} message Error message to display on the screen
+ */
+function displayError(message) {
+  const errorContainer = document.getElementById("error-container");
+  const errorField = document.getElementById("error-field");
+
+  errorContainer.style.display = 'flex'
+  errorField.innerHTML = message
+
+  document.getElementById("error-close").addEventListener("click", _event => {
+    const errorContainer = document.getElementById("error-container");
+    errorContainer.style.display = 'none'
+  });
 }
 
 function handleWindowControls() {
@@ -52,6 +71,7 @@ function handleWindowControls() {
   }
 }
 exports.handleWindowControls = handleWindowControls;
+exports.displayError = displayError;
 
 // When document has loaded, initialise
 document.onreadystatechange = (_event) => {

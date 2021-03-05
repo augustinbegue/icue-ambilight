@@ -1,4 +1,5 @@
 const sdk = require('cue-sdk');
+const renderer = require("../../renderer")
 const { amibilight } = require("./amibilight");
 
 const cue = {
@@ -9,8 +10,9 @@ const cue = {
     this.info = [];
     this.positions = [];
 
-    if (this.errCode === 0) {
-      // 'CE_Success'
+    if (this.errCode === 1) {
+      console.log("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)")
+      renderer.displayError("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.")
     }
 
     this.info = this.getDevicesInfo()
