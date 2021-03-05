@@ -7,6 +7,17 @@ const amibilight = {
     this.c1 = document.getElementById("c1");
     this.ctx1 = this.c1.getContext("2d");
 
+    // Override the disabled color if it is not present in the config
+    if (!config.disabledColor || config.disabledColor.r) {
+      config.disabledColor = {
+        r: 0,
+        g: 0,
+        b: 0
+      }
+
+      localStorage.setItem("config", JSON.stringify(config))
+    }
+
     this.positions = positions;
     this.devices = devices;
 
@@ -20,8 +31,10 @@ const amibilight = {
 
   updateLeds: function () {
     for (let i = 0; i < this.positions.length; i++) {
-      sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
-      sdk.CorsairSetLedsColorsFlushBuffer();
+      if (this.positions[i].length > 0) {
+        sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
+        sdk.CorsairSetLedsColorsFlushBuffer();
+      }
     }
   },
 
