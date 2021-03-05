@@ -1,0 +1,48 @@
+html, body {
+    min-width: 500px;
+    height: 100%;
+    overflow: hidden;
+    -webkit-user-select: none;
+  }
+  
+  .source:hover,
+  .source:focus,
+  .selected {
+    box-shadow: 0 0 0 0.125em rgba(50, 115, 226, .25);
+  }
+
+  .source.selected {
+    box-shadow: 0 0 0 0.125em white;
+  }
+
+  .panel-block, .panel-block:first-child {
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
+  }
+
+  .app-container {
+    display: flex;
+    width: 100%;
+    padding: 0px;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .navbar-container {
+    width: 240px;
+    margin: 0px;
+    padding-top: 0px;
+    padding-right: 0px;
+    background-color: #242424;
+  }
+
+  .content-container {
+    overflow-x: scroll;
+    width: 100%;
+  }
+
+  #error-container {
+    padding: 8px;
+    background-color: #d12e2e;
+  }

@@ -8,47 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="src/css/bulmaswatch.min.css">
   <link rel="stylesheet" href="src/css/titlebar.css">
-  <style>
-    html, body {
-      min-width: 500px;
-      height: 100%;
-      overflow: hidden;
-      -webkit-user-select: none;
-    }
-    
-    .source:hover,
-    .source:focus,
-    .selected {
-      box-shadow: 0 0 0 0.125em rgba(50, 115, 226, .25);
-    }
-
-    .source.selected {
-      box-shadow: 0 0 0 0.125em white;
-    }
-
-    .panel-block, .panel-block:first-child {
-      border-bottom: none;
-      border-right: none;
-      border-top: none;
-    }
-
-    .app-container {
-      display: flex;
-    }
-
-    .navbar-container {
-      width: 240px;
-      margin: 0px;
-      padding-top: 0px;
-      padding-right: 0px;
-      background-color: #242424;
-    }
-
-    .content-container {
-      overflow-x: scroll;
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="src/css/app.css">
 </head>
 
 <body>
@@ -82,86 +42,91 @@
       </div>
     </div>
   </header>
-  <div id="main" class="app-container">
-    <div class="navbar-container">
-      <nav class="panel" style="background-color: #242424">
-        <a class="panel-block is-active" id="sourcesContainerButton">
-          <span class="panel-icon">
-            <i class="fas fa-desktop" aria-hidden="true"></i>
-          </span>
-          Sources
-        </a>
-        <a class="panel-block" id="layoutContainerButton">
-          <span class="panel-icon">
-            <i class="fas fa-layer-group" aria-hidden="true"></i>
-          </span>
-          Layout
-        </a>
-        <a class="panel-block" id="captureContainerButton">
-          <span class="panel-icon">
-            <i class="fas fa-video" aria-hidden="true"></i>
-          </span>
-          Capture Previews
-        </a>
-        <a class="panel-block" id="settingsContainerButton">
-          <span class="panel-icon">
-            <i class="fas fa-cog" aria-hidden="true"></i>
-          </span>
-          Settings
-        </a>
-      </nav>
+  <div id="main">
+    <div id="error-container">
+      <div id="error-field"></div>
     </div>
-    <div class="content-container">
-      <section class="section" id="sourcesContainer">
-        <div class="container">
-          <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button>
-          </h1>
-          <div id="sources" style="display: flex; flex-wrap: wrap;">
-
-          </div>
-        </div>
-      </section>
-      <section class="section is-hidden" id="layoutContainer">
-        <div class="container">
-          <h1 class="title is-5" id="refreshSources">Layout</h1>
-          <div id="display">
-
-          </div>
-          <div id="layout" style="display: flex; flex-wrap: wrap;">
-
-          </div>
-        </div>
-      </section>
-      <section class="section is-hidden" id="captureContainer">
-        <div class="container">
-          <h1 class="title is-5">
-            Capture previews
-          </h1>
-          <div id="captures" class="columns">
-            <div class="column">
-              <p><b>Video capture :</b></p>
-              <video id="video" autoplay controls></video>
-            </div>
-            <div class="column">
-              <p><b>Leds Canvas :</b></p>
-              <!-- <p>Before black bar detection :</p>
-              <canvas id="c2" style="height: auto; width: 100%;"></canvas>
-              <p>After black bar detection :</p> -->
-              <canvas id="c1" style="height: auto; width: 100%;"></canvas>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="section is-hidden" id="settingsContainer">
-        <div class="container">
-          <h1 class="title is-5">Devices Connected</h1>
-          <div class="box" style="width: auto;">
-            <div id="devices" class="content">
-
+    <div class="app-container">
+      <div class="navbar-container">
+        <nav class="panel" style="background-color: #242424">
+          <a class="panel-block is-active" id="sourcesContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-desktop" aria-hidden="true"></i>
+            </span>
+            Sources
+          </a>
+          <a class="panel-block" id="layoutContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-layer-group" aria-hidden="true"></i>
+            </span>
+            Layout
+          </a>
+          <a class="panel-block" id="captureContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-video" aria-hidden="true"></i>
+            </span>
+            Capture Previews
+          </a>
+          <a class="panel-block" id="settingsContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-cog" aria-hidden="true"></i>
+            </span>
+            Settings
+          </a>
+        </nav>
+      </div>
+      <div class="content-container">
+        <section class="section" id="sourcesContainer">
+          <div class="container">
+            <h1 class="title is-5" id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button>
+            </h1>
+            <div id="sources" style="display: flex; flex-wrap: wrap;">
+  
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <section class="section is-hidden" id="layoutContainer">
+          <div class="container">
+            <h1 class="title is-5" id="refreshSources">Layout</h1>
+            <div id="display">
+  
+            </div>
+            <div id="layout" style="display: flex; flex-wrap: wrap;">
+  
+            </div>
+          </div>
+        </section>
+        <section class="section is-hidden" id="captureContainer">
+          <div class="container">
+            <h1 class="title is-5">
+              Capture previews
+            </h1>
+            <div id="captures" class="columns">
+              <div class="column">
+                <p><b>Video capture :</b></p>
+                <video id="video" autoplay controls></video>
+              </div>
+              <div class="column">
+                <p><b>Leds Canvas :</b></p>
+                <!-- <p>Before black bar detection :</p>
+                <canvas id="c2" style="height: auto; width: 100%;"></canvas>
+                <p>After black bar detection :</p> -->
+                <canvas id="c1" style="height: auto; width: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="section is-hidden" id="settingsContainer">
+          <div class="container">
+            <h1 class="title is-5">Devices Connected</h1>
+            <div class="box" style="width: auto;">
+              <div id="devices" class="content">
+  
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
   <script>
