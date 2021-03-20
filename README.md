@@ -16,7 +16,7 @@ Feel free to make any requests to improve it and continuing posting issues as I 
 
 ## Installation
 
-Download the latest release [here](https://github.com/Tagueo/icue-ambilight/releases]).
+Download the latest release [here](https://github.com/Tagueo/icue-ambilight/releases).
 
 ## FAQ and Troubleshooting
 
