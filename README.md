@@ -1,8 +1,8 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Tagueo/icue-ambilight?style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/latest/total?style=flat-square)
-![GitHub all releases](https://img.shields.io/github/downloads/Tagueo/icue-ambilight/total?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Tagueo/icue-ambilight/build-release?style=flat-square)
-![GitHub](https://img.shields.io/github/license/Tagueo/icue-ambilight?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/augustinbegue/icue-ambilight?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/augustinbegue/icue-ambilight/latest/total?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/augustinbegue/icue-ambilight/total?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/augustinbegue/icue-ambilight/build-release?style=flat-square)
+![GitHub](https://img.shields.io/github/license/augustinbegue/icue-ambilight?style=flat-square)
 
 # icue-ambilight
 Synchronise your iCue compatible devices with the content displayed on your screen.
@@ -16,7 +16,7 @@ Feel free to make any requests to improve it and continuing posting issues as I 
 
 ## Installation
 
-Download the latest release [here](https://github.com/Tagueo/icue-ambilight/releases).
+Download the latest release [here](https://github.com/augustinbegue/icue-ambilight/releases).
 
 ## FAQ and Troubleshooting
 
@@ -31,9 +31,9 @@ Open iCue, then go into the settings tab.
 Check the highlighted box and then, restart icue-ambilight for your changes to be taken into account
 
 ### For developpers :
-![GitHub issues](https://img.shields.io/github/issues/Tagueo/icue-ambilight?style=flat-square)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/Tagueo/icue-ambilight?color=green&style=flat-square)
-![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Tagueo/icue-ambilight/latest?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/augustinbegue/icue-ambilight?style=flat-square)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/augustinbegue/icue-ambilight?color=green&style=flat-square)
+![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/augustinbegue/icue-ambilight/latest?style=flat-square)
 
 #### Build instructions :
 - Make sure you have installed the prerequisites for the [cue-sdk](https://github.com/CorsairOfficial/cue-sdk-node) to work properly.
