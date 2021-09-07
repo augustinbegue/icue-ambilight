@@ -1,4 +1,5 @@
 const { cue } = require('../cue/cue')
+const config = JSON.parse(localStorage.getItem('config'));
 
 const processor = {
   timerCallback: function () {
@@ -21,6 +22,8 @@ const processor = {
     this.c1.height = maxDef.maxY
     this.ctx1 = this.c1.getContext("2d");
 
+    this.configureBlur(this)
+
     /*this.c2 = document.getElementById("c2");
     this.c2.width = maxDef.maxX
     this.c2.height = maxDef.maxY
@@ -38,6 +41,26 @@ const processor = {
     setInterval(() => {
       this.checkForBlackBars()
     }, 1000)*/
+  },
+
+  configureBlur: function (self) {
+    self.blur = document.getElementById("blur")
+
+    if (config.blur === undefined) {
+      config.blur = 0
+      localStorage.setItem("config", JSON.stringify(config))
+    }
+    self.blur.value = config.blur
+
+    self.ctx1.filter = 'blur(' + config.blur + 'px)'
+
+    self.blur.onchange = function () {
+      console.log("blur changed " + self.blur.value)
+      self.ctx1.filter = 'blur(' + self.blur.value + 'px)'
+      config.blur = self.blur.value
+
+      localStorage.setItem("config", JSON.stringify(config))
+    }
   },
 
   computeFrame: function () {
@@ -93,7 +116,7 @@ const processor = {
     }
 
     // TODO : left and right detection (minor)
-    
+
     if (topBarHeight === 152) {
       topBarHeight = 0
     }
