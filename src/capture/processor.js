@@ -48,8 +48,8 @@ const processor = {
 
     if (config.blur === undefined) {
       config.blur = 0
-      localStorage.setItem("config", JSON.stringify(config))
     }
+    localStorage.setItem("config", JSON.stringify(config))
     self.blur.value = config.blur
 
     self.ctx1.filter = 'blur(' + config.blur + 'px)'
