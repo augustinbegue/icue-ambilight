@@ -1,19 +1,19 @@
 const { cue } = require("./cue");
+const { processor } = require("../capture/processor");
 
 let displayCanvas = document.createElement("canvas");
 exports.displayCanvas = displayCanvas;
 canvasCtx = displayCanvas.getContext("2d");
 
 function initLayout() {
-  const maxDef = cue.getMaxDefinition();
   const display = document.getElementById("display");
 
   displayCanvas.id = "displayCanvas";
 
   display.appendChild(displayCanvas);
 
-  displayCanvas.height = maxDef.maxY;
-  displayCanvas.width = maxDef.maxX;
+  displayCanvas.height = processor.height;
+  displayCanvas.width = processor.width;
   displayCanvas.style.margin = '4px';
 
   displayCanvas.style.height = "auto";
@@ -62,7 +62,7 @@ function initLayout() {
       y1In.value > displayCanvas.height - 1 ? y1In.value = displayCanvas.height - 1 : y1In.value;
       y2In.value > displayCanvas.height - 1 ? y2In.value = displayCanvas.height - 1 : y2In.value;
 
-      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkbox.checked)
+      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkbox.checked);
     };
 
     x1In.onchange = handler;

@@ -9,7 +9,7 @@ const { initLayout } = require("./src/cue/layout");
 
 const win = remote.getCurrentWindow(); /* Note this is different to the html global `window` variable */
 
-let config = localStorage.getItem('config')
+let config = localStorage.getItem('config');
 
 if (!config || !config.disabledColor || !config.refreshrate) {
   localStorage.setItem('config', `${JSON.stringify({
@@ -19,7 +19,7 @@ if (!config || !config.disabledColor || !config.refreshrate) {
       g: 0,
       b: 0
     }
-  })}`)
+  })}`);
 }
 
 /**
@@ -30,12 +30,12 @@ function displayError(message) {
   const errorContainer = document.getElementById("error-container");
   const errorField = document.getElementById("error-field");
 
-  errorContainer.style.display = 'flex'
-  errorField.innerHTML = message
+  errorContainer.style.display = 'flex';
+  errorField.innerHTML = message;
 
   document.getElementById("error-close").addEventListener("click", _event => {
     const errorContainer = document.getElementById("error-container");
-    errorContainer.style.display = 'none'
+    errorContainer.style.display = 'none';
   });
 }
 
@@ -85,14 +85,16 @@ window.onbeforeunload = (_event) => {
   (DOM element listeners get auto garbage collected but not
   Electron win listeners as the win is not dereferenced unless closed) */
   win.removeAllListeners();
-}
+};
 
+new Panels();
 cue.init();
 refreshSources();
 refreshDeviceInfo();
-initLayout();
-processor.doLoad();
-new Panels();
+processor.doLoad().then(() => {
+  initLayout();
+});
+
 
 
 

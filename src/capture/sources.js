@@ -25,9 +25,9 @@ function refreshSources() {
     const sourcesButtons = document.getElementById('sources').childNodes;
 
     for (const button of sourcesButtons) {
-      button.addEventListener('click', (event) => {
+      button.addEventListener('click', async (event) => {
         event.stopPropagation();
-        startCapture(sources[button.id]);
+        await startCapture(sources[button.id]);
         processor.doLoad();
 
         sourcesButtons.forEach((_el, i) => {
