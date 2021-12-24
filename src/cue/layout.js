@@ -6,6 +6,21 @@ let displayCanvas = document.createElement("canvas");
 exports.displayCanvas = displayCanvas;
 canvasCtx = displayCanvas.getContext("2d");
 
+// predefined colors for the devices
+const colors = [
+  "#E06C75",
+  "#98C379",
+  "#D19A66",
+  "#61AFEF",
+  "#C678DD",
+  "#56B6C2",
+  "#C06C84",
+  "#3FC380",
+  "#F67280",
+  "#C2D5C4",
+  "#F5F5F5",
+];
+
 function initLayout() {
   const display = document.getElementById("display");
 
@@ -16,6 +31,7 @@ function initLayout() {
   displayCanvas.height = processor.height;
   displayCanvas.width = processor.width;
   displayCanvas.style.margin = '4px';
+  displayCanvas.style.imageRendering = 'pixelated';
 
   displayCanvas.style.height = "auto";
   displayCanvas.style.width = "100%";
@@ -30,7 +46,7 @@ function initLayout() {
 
     layoutEl = document.getElementById("layout");
     layoutEl.innerHTML += `
-    <div id="deviceForm${i}" class="box" style="margin: 8px; padding: 16px; background: rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255});">
+    <div id="deviceForm${i}" class="box" style="margin: 8px; padding: 16px; background: ${colors[i]}">
       <p>#${i + 1} - ${device.model}</p>
       <div style="display: flex; flex-wrap: wrap; flex-direction: row">
         <label class="checkbox" style="color: white; margin: 8px;">
@@ -103,7 +119,7 @@ function updateCanvas() {
   cue.devices.forEach((device, i) => {
     if (device.enabled) {
       canvasCtx.globalAlpha = 0.6;
-      canvasCtx.fillStyle = `rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255}, 10)`;
+      canvasCtx.fillStyle = colors[i];
       canvasCtx.fillRect(device.x1, device.y1, device.x2, device.y2);
       canvasCtx.globalAlpha = 1;
     }
