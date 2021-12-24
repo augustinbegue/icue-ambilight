@@ -1,6 +1,6 @@
 const sdk = require('cue-sdk');
-const config = JSON.parse(localStorage.getItem('config'));
 const { cue } = require("./cue");
+let config = JSON.parse(localStorage.getItem('config'));
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -8,6 +8,7 @@ function clamp(value, min, max) {
 
 const amibilight = {
   init: function (positions, devices) {
+    config = JSON.parse(localStorage.getItem('config'));
     this.c1 = document.getElementById("c1");
     this.ctx1 = this.c1.getContext("2d");
 
