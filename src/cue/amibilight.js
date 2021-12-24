@@ -2,10 +2,6 @@ const sdk = require('cue-sdk');
 const { cue } = require("./cue");
 let config = JSON.parse(localStorage.getItem('config'));
 
-function clamp(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-}
-
 const amibilight = {
   init: function (positions, devices) {
     config = JSON.parse(localStorage.getItem('config'));
@@ -23,29 +19,7 @@ const amibilight = {
       localStorage.setItem("config", JSON.stringify(config));
     }
 
-    this.positions = positions;
-    this.devices = devices;
-
-    // Precomputing coordinates for capture
-    this.imgDataCoordinates = [];
-    for (let i = 0; i < positions.length; i++) {
-      const device = this.devices[i];
-
-      this.imgDataCoordinates.push(positions[i].map(p => {
-        const deviceXScale = (device.x2 - device.x1) / (device.sizeX);
-        const deviceYScale = (device.y2 - device.y1) / (device.sizeY);
-
-        return {
-          ledId: p.ledId,
-          sx: device.x1 + (p.left) * deviceXScale,
-          sy: device.y1 + (p.top) * deviceYScale,
-          sw: 1,
-          sh: 1,
-        };
-      }));
-    }
-
-    console.log(this.imgDataCoordinates);
+    this.reload(positions, devices);
 
     let self = this;
     setInterval(function () {
@@ -57,10 +31,22 @@ const amibilight = {
     this.positions = positions;
     this.devices = devices;
 
+    console.log(this.devices);
+    console.log(this.positions);
+
     // Precomputing coordinates for capture
     this.imgDataCoordinates = [];
     for (let i = 0; i < positions.length; i++) {
       const device = this.devices[i];
+
+      let startX = positions[i][0].left, startY = positions[i][0].top;
+      for (let j = 0; j < positions[i].length; j++) {
+        const element = positions[i][j];
+        if (element.left < startX)
+          startX = element.left;
+        if (element.top < startY)
+          startY = element.top;
+      }
 
       this.imgDataCoordinates.push(positions[i].map(p => {
         const deviceXScale = (device.x2 - device.x1) / (device.sizeX);
@@ -68,10 +54,10 @@ const amibilight = {
 
         return {
           ledId: p.ledId,
-          sx: device.x1 + (p.left) * deviceXScale,
-          sy: device.y1 + (p.top) * deviceYScale,
-          sw: 1,
-          sh: 1,
+          sx: device.x1 + (p.left - startX) * deviceXScale,
+          sy: device.y1 + (p.top - startY) * deviceYScale,
+          sw: Math.ceil(p.width * deviceXScale),
+          sh: Math.ceil(p.height * deviceYScale),
         };
       }));
     }
