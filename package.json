@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/Tagueo/icue-ambilight#readme",
   "dependencies": {
-    "cue-sdk": "^1.6.0"
+    "cue-sdk": "^2.2.0"
   },
   "build": {
     "appId": "com.icueambilight.app",
