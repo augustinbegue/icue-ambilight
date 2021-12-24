@@ -5,6 +5,8 @@
 ![GitHub](https://img.shields.io/github/license/augustinbegue/icue-ambilight?style=flat-square)
 
 # icue-ambilight
+<a href="https://www.corsair.com/icue"><img src="https://cwsmgmt.corsair.com/pdp/k65-rgb-mini/assets/images/icue-logo.png" alt="iCUE" height="80" /></a>
+
 Synchronise your iCue compatible devices with the content displayed on your screen.
 
 ## Demonstration video (click)
