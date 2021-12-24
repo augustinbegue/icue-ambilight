@@ -6,6 +6,10 @@ function refreshSources() {
   const sourcesEl = document.getElementById('sources');
 
   getSources().then((sources) => {
+    let selectedSource = parseInt(localStorage.getItem('selectedSource')) || 0;
+
+    console.log(selectedSource);
+
     sourcesEl.innerHTML = '';
     for (const i in sources) {
       sources[i].thumbnail = sources[i].thumbnail.toDataURL();
@@ -20,32 +24,41 @@ function refreshSources() {
       </div>`;
     }
 
-    startCapture(sources[0]);
+    startCapture(sources[selectedSource]);
 
     const sourcesButtons = document.getElementById('sources').childNodes;
+    updateSelectedSource(sourcesButtons, selectedSource);
 
     for (const button of sourcesButtons) {
-      button.addEventListener('click', (event) => {
+      button.addEventListener('click', async (event) => {
         event.stopPropagation();
-        startCapture(sources[button.id]);
+        await startCapture(sources[button.id]);
+
+        selectedSource = parseInt(button.id);
+        updateSelectedSource(sourcesButtons, selectedSource);
+
         processor.doLoad();
-
-        sourcesButtons.forEach((_el, i) => {
-          let but = document.getElementById(i);
-
-          if (but) {
-            if (i == button.id) {
-              but.classList.add('selected');
-            } else {
-              but.classList.remove('selected');
-            }
-          }
-        });
       });
     }
   });
 }
 exports.refreshSources = refreshSources;
+
+function updateSelectedSource(sourcesButtons, selectedSource) {
+  localStorage.setItem('selectedSource', selectedSource);
+
+  sourcesButtons.forEach((_el, i) => {
+    let butt = document.getElementById(i);
+
+    if (butt) {
+      if (i == selectedSource) {
+        butt.classList.add('selected');
+      } else {
+        butt.classList.remove('selected');
+      }
+    }
+  });
+}
 
 function refreshDeviceInfo() {
   const info = cue.devices;

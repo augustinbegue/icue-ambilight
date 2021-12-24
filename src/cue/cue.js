@@ -1,5 +1,5 @@
 const sdk = require('cue-sdk');
-const renderer = require("../../renderer")
+const renderer = require("../../renderer");
 const { amibilight } = require("./amibilight");
 
 const cue = {
@@ -11,11 +11,11 @@ const cue = {
     this.positions = [];
 
     if (this.errCode === 1) {
-      console.log("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)")
-      renderer.displayError("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.")
+      console.error("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)");
+      renderer.displayError("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.");
     }
 
-    this.info = this.getDevicesInfo()
+    this.info = this.getDevicesInfo();
 
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
@@ -25,12 +25,10 @@ const cue = {
 
     this.devices = this.parseDevicesInfo(this.info, this.positions);
 
-    console.log(this.positions)
-
-    amibilight.init(this.positions, this.devices)
+    amibilight.init(this.positions, this.devices);
   },
 
-  parseDevicesInfo: function(info, positions) {
+  parseDevicesInfo: function (info, positions) {
     const devices = [];
 
     let previousDevices = JSON.parse(localStorage.getItem("devices"));
@@ -44,17 +42,28 @@ const cue = {
       } else {
         device.enabled = true;
       }
-      
+
       device.model = info[i].model;
       device.ledsCount = info[i].ledsCount;
+
+      device.sizeX = positions[i][0].width;
+      device.sizeY = positions[i][0].height;
+
       if (positions[i]) {
-        device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
-        device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+        for (let j = 0; j < positions[i].length; j++) {
+          const pos = positions[i][j];
+          if (pos.left + pos.width > device.sizeX) {
+            device.sizeX = pos.left + pos.width + 1;
+          }
+          if (pos.top + pos.height > device.sizeY) {
+            device.sizeY = pos.top + pos.height + 1;
+          }
+        }
       } else {
-        device.sizeX = 1
-        device.sizeY = 1
+        device.sizeX = 1;
+        device.sizeY = 1;
       }
-      
+
       if (previousDevices && previousDevices[i] && previousDevices[i].model == device.model) {
         device.x1 = previousDevices[i].x1;
         device.y1 = previousDevices[i].y1;
@@ -80,11 +89,11 @@ const cue = {
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
         position = sdk.CorsairGetLedPositionsByDeviceIndex(i);
-        let newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0);
+        let newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0) / position.reduce((acc, curr) => Math.max(curr.width, acc), 0);
         if (newX > extremums.maxX) {
           extremums.maxX = newX;
         }
-        let newY = position.reduce((acc, curr) => Math.max(curr.top, acc), 0);
+        let newY = position.reduce((acc, curr) => Math.max(curr.top, acc), 0) / position.reduce((acc, curr) => Math.max(curr.height, acc), 0);
         if (newY > extremums.maxY) {
           extremums.maxY = newY + 1;
         }
@@ -96,15 +105,15 @@ const cue = {
 
   getDevicesInfo: function () {
     const n = sdk.CorsairGetDeviceCount();
-    
+
     let info = [];
-    
+
     for (let i = 0; i < n; ++i) {
       info[i] = sdk.CorsairGetDeviceInfo(i);
     }
 
     return info;
   }
-}
+};
 
 exports.cue = cue;

@@ -1,19 +1,17 @@
 const { desktopCapturer } = require('electron');
-const { cue } = require('../cue/cue')
+const { cue } = require('../cue/cue');
 
 function getSources() {
   return new Promise((resolve, reject) => {
     desktopCapturer.getSources({ types: ['screen'] })
-    .then(async (sources) => {
-      resolve(sources)
-    })
-    .catch(e => reject(e))
-  })
+      .then(async (sources) => {
+        resolve(sources);
+      })
+      .catch(e => reject(e));
+  });
 }
 
 async function startCapture(source) {
-  const maxDef = cue.getMaxDefinition()
-
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
@@ -21,8 +19,6 @@ async function startCapture(source) {
         mandatory: {
           chromeMediaSource: 'desktop',
           chromeMediaSourceId: source.id,
-          minWidth: maxDef.maxX,
-          maxWidth: maxDef.maxX
         }
       }
     });
@@ -38,6 +34,7 @@ function handleStream(stream) {
   video.srcObject = stream;
   video.onloadedmetadata = (e) => video.play();
 }
+
 function handleError(e) {
   console.error(e);
 }
