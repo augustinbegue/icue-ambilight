@@ -1,6 +1,6 @@
 {
   "name": "icue-ambilight",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "Ambilight for iCue devices",
   "main": "main.js",
   "devDependencies": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Tagueo/icue-ambilight.git"
+    "url": "git+https://github.com/augustinbegue/icue-ambilight"
   },
   "keywords": [
     "icue",
@@ -24,9 +24,9 @@
   "author": "Augustin Bégué",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Tagueo/icue-ambilight/issues"
+    "url": "https://github.com/augustinbegue/icue-ambilight/issues"
   },
-  "homepage": "https://github.com/Tagueo/icue-ambilight#readme",
+  "homepage": "https://github.com/augustinbegue/icue-ambilight#readme",
   "dependencies": {
     "cue-sdk": "^2.2.0"
   },
