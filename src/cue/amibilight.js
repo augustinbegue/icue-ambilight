@@ -2,6 +2,10 @@ const sdk = require('cue-sdk');
 const config = JSON.parse(localStorage.getItem('config'));
 const { cue } = require("./cue");
 
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
 const amibilight = {
   init: function (positions, devices) {
     this.c1 = document.getElementById("c1");
@@ -13,15 +17,34 @@ const amibilight = {
         r: 0,
         g: 0,
         b: 0
-      }
+      };
 
-      localStorage.setItem("config", JSON.stringify(config))
+      localStorage.setItem("config", JSON.stringify(config));
     }
 
     this.positions = positions;
     this.devices = devices;
 
-    console.log(this.devices);
+    // Precomputing coordinates for capture
+    this.imgDataCoordinates = [];
+    for (let i = 0; i < positions.length; i++) {
+      const device = this.devices[i];
+
+      this.imgDataCoordinates.push(positions[i].map(p => {
+        const deviceXScale = (device.x2 - device.x1) / (device.sizeX);
+        const deviceYScale = (device.y2 - device.y1) / (device.sizeY);
+
+        return {
+          ledId: p.ledId,
+          sx: device.x1 + (p.left) * deviceXScale,
+          sy: device.y1 + (p.top) * deviceYScale,
+          sw: 1,
+          sh: 1,
+        };
+      }));
+    }
+
+    console.log(this.imgDataCoordinates);
 
     let self = this;
     setInterval(function () {
@@ -29,42 +52,76 @@ const amibilight = {
     }, 1000 / config?.refreshrate ? config.refreshrate : 30);
   },
 
+  reload: function (positions, devices) {
+    this.positions = positions;
+    this.devices = devices;
+
+    // Precomputing coordinates for capture
+    this.imgDataCoordinates = [];
+    for (let i = 0; i < positions.length; i++) {
+      const device = this.devices[i];
+
+      this.imgDataCoordinates.push(positions[i].map(p => {
+        const deviceXScale = (device.x2 - device.x1) / (device.sizeX);
+        const deviceYScale = (device.y2 - device.y1) / (device.sizeY);
+
+        return {
+          ledId: p.ledId,
+          sx: device.x1 + (p.left) * deviceXScale,
+          sy: device.y1 + (p.top) * deviceYScale,
+          sw: 1,
+          sh: 1,
+        };
+      }));
+    }
+
+    console.log(this.imgDataCoordinates);
+  },
+
   updateLeds: function () {
+    this.layoutC = document.getElementById("displayCanvas");
+    this.layoutCtx = this.layoutC?.getContext("2d");
+
     for (let i = 0; i < this.positions.length; i++) {
       if (this.positions[i].length > 0) {
-        sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, this.getColors(i, this.positions[i]));
+        let colors = this.getColors(i, this.imgDataCoordinates[i]);
+        sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, colors);
         sdk.CorsairSetLedsColorsFlushBuffer();
       }
     }
   },
 
-  getColors: function (index, positions) {
+  getColors: function (index, imgDataCoordinates) {
     const device = this.devices[index];
 
     if (!device.enabled) {
-      return colors = positions.map((p) => {
+      return colors = imgDataCoordinates.map((p) => {
         return {
           ledId: p.ledId,
           r: config.disabledColor.r,
           g: config.disabledColor.g,
           b: config.disabledColor.b
         };
-      }); 
+      });
     }
 
-    const xScale = (device.x2 / device.sizeX);
-    const yScale = (device.y2 / device.sizeY);
-     
-    return colors = positions.map((p) => {
-      const imgData = this.ctx1.getImageData(device.x1 + (p.left * xScale), device.y1 + (p.top * yScale), device.x1 + (p.width * xScale), device.y1 + (p.width * yScale)).data;
-      
+    return colors = imgDataCoordinates.map((p) => {
+      let imgData = this.ctx1.getImageData(p.sx, p.sy, p.sw, p.sh);
+
+      if (device.showLeds) {
+        this.layoutCtx.fillStyle = `rgba(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]}, 0.5)`;
+        this.layoutCtx.fillRect(p.sx, p.sy, p.sw, p.sh);
+      }
+
+      imgData = imgData.data;
+
       return {
         ledId: p.ledId,
         r: imgData[0],
         g: imgData[1],
         b: imgData[2]
       };
-    }); 
+    });
   },
 };
 

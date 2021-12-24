@@ -1,5 +1,6 @@
 const { cue } = require("./cue");
 const { processor } = require("../capture/processor");
+const { amibilight } = require("./amibilight");
 
 let displayCanvas = document.createElement("canvas");
 exports.displayCanvas = displayCanvas;
@@ -30,19 +31,25 @@ function initLayout() {
     layoutEl = document.getElementById("layout");
     layoutEl.innerHTML += `
     <div id="deviceForm${i}" class="box" style="margin: 8px; padding: 16px; background: rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255});">
-      <p>${device.model}</p>
-      <label class="checkbox" style="color: white;">
-        <input type="checkbox" name="device${i}enable" id="device${i}enable" ${device.enabled ? `checked` : ``}>
-        Enable
-      </label>
+      <p>#${i + 1} - ${device.model}</p>
+      <div style="display: flex; flex-wrap: wrap; flex-direction: row">
+        <label class="checkbox" style="color: white; margin: 8px;">
+          <input type="checkbox" name="device${i}enable" id="device${i}enable" ${device.enabled ? `checked` : ``}>
+          Enable
+        </label>
+        <label class="checkbox" style="color: white; margin: 8px;">
+          <input type="checkbox" name="device${i}showleds" id="device${i}showleds" ${device.showLeds ? `checked` : ``}>
+          Show LEDs
+        </label>
+      </div>
       <div class="control"  style="display: flex; flex-wrap: wrap;">
-        <input class="input is-small" type="text" name="device${i}x1" id="device${i}x1"
+        <input class="input is-small" type="number" name="device${i}x1" id="device${i}x1"
                placeholder="x1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x1}">
-        <input class="input is-small" type="text" name="device${i}y1" id="device${i}y1"
+        <input class="input is-small" type="number" name="device${i}y1" id="device${i}y1"
                placeholder="y1" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y1}">
-        <input class="input is-small" type="text" name="device${i}x2" id="device${i}x2"
+        <input class="input is-small" type="number" name="device${i}x2" id="device${i}x2"
                placeholder="x2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.x2}">
-        <input class="input is-small" type="text" name="device${i}y2" id="device${i}y2"
+        <input class="input is-small" type="number" name="device${i}y2" id="device${i}y2"
                placeholder="y2" style="max-width: 60px; margin: 0px 4px 0px 4px;" value="${device.y2}">
       </div>
     </div>`;
@@ -53,8 +60,8 @@ function initLayout() {
     let x2In = document.getElementById(`device${i}x2`);
     let y1In = document.getElementById(`device${i}y1`);
     let y2In = document.getElementById(`device${i}y2`);
-    let checkbox = document.getElementById(`device${i}enable`);
-
+    let checkboxEnable = document.getElementById(`device${i}enable`);
+    let checkboxShowLeds = document.getElementById(`device${i}showleds`);
 
     const handler = function (e) {
       x1In.value > displayCanvas.width - 1 ? x1In.value = displayCanvas.width - 1 : x1In.value;
@@ -62,26 +69,29 @@ function initLayout() {
       y1In.value > displayCanvas.height - 1 ? y1In.value = displayCanvas.height - 1 : y1In.value;
       y2In.value > displayCanvas.height - 1 ? y2In.value = displayCanvas.height - 1 : y2In.value;
 
-      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkbox.checked);
+      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkboxEnable.checked, checkboxShowLeds.checked);
     };
 
     x1In.onchange = handler;
     x2In.onchange = handler;
     y1In.onchange = handler;
     y2In.onchange = handler;
-    checkbox.onchange = handler;
+    checkboxEnable.onchange = handler;
+    checkboxShowLeds.onchange = handler;
   });
 }
 exports.initLayout = initLayout;
 
-function updateLayout(i, x1, y1, x2, y2, enabled) {
+function updateLayout(i, x1, y1, x2, y2, enabled, showLeds) {
   cue.devices[i].x1 = parseInt(x1);
   cue.devices[i].x2 = parseInt(x2);
   cue.devices[i].y1 = parseInt(y1);
   cue.devices[i].y2 = parseInt(y2);
   cue.devices[i].enabled = enabled;
+  cue.devices[i].showLeds = showLeds;
 
   localStorage.setItem("devices", JSON.stringify(cue.devices));
+  amibilight.reload(cue.positions, cue.devices);
 
   updateCanvas();
 }
@@ -94,7 +104,7 @@ function updateCanvas() {
     if (device.enabled) {
       canvasCtx.globalAlpha = 0.6;
       canvasCtx.fillStyle = `rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255}, 10)`;
-      canvasCtx.fillRect(device.x1, device.y1, device.x2, device.y2);
+      canvasCtx.fillRect(device.x1, device.y1, device.x2 + 1, device.y2 + 1);
       canvasCtx.globalAlpha = 1;
     }
   });

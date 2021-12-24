@@ -38,8 +38,6 @@ const processor = {
           self.height = deviceMaxHeight;
         }
 
-        console.log(deviceMaxDef, captureRatio, deviceMaxWidth, deviceMaxWidth / captureRatio);
-
         self.c1.width = self.width;
         self.c1.height = self.height;
 
@@ -66,7 +64,6 @@ const processor = {
       if (self.blur.value < 0)
         self.blur.value = 0;
 
-      // console.log("blur changed " + self.blur.value)
       self.ctx1.filter = 'blur(' + self.blur.value + 'px)';
       config.blur = self.blur.value;
 

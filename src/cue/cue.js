@@ -11,12 +11,11 @@ const cue = {
     this.positions = [];
 
     if (this.errCode === 1) {
-      console.log("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)");
+      console.error("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)");
       renderer.displayError("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.");
     }
 
     this.info = this.getDevicesInfo();
-    console.log(this.info);
 
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
@@ -25,8 +24,6 @@ const cue = {
     }
 
     this.devices = this.parseDevicesInfo(this.info, this.positions);
-
-    console.log(this.positions);
 
     amibilight.init(this.positions, this.devices);
   },
@@ -81,11 +78,11 @@ const cue = {
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
         position = sdk.CorsairGetLedPositionsByDeviceIndex(i);
-        let newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0);
+        let newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0) / position.reduce((acc, curr) => Math.max(curr.width, acc), 0);
         if (newX > extremums.maxX) {
           extremums.maxX = newX;
         }
-        let newY = position.reduce((acc, curr) => Math.max(curr.top, acc), 0);
+        let newY = position.reduce((acc, curr) => Math.max(curr.top, acc), 0) / position.reduce((acc, curr) => Math.max(curr.height, acc), 0);
         if (newY > extremums.maxY) {
           extremums.maxY = newY + 1;
         }
