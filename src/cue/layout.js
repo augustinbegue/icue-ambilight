@@ -64,10 +64,10 @@ function initLayout() {
     let checkboxShowLeds = document.getElementById(`device${i}showleds`);
 
     const handler = function (e) {
-      x1In.value > displayCanvas.width - 1 ? x1In.value = displayCanvas.width - 1 : x1In.value;
-      x2In.value > displayCanvas.width - 1 ? x2In.value = displayCanvas.width - 1 : x2In.value;
-      y1In.value > displayCanvas.height - 1 ? y1In.value = displayCanvas.height - 1 : y1In.value;
-      y2In.value > displayCanvas.height - 1 ? y2In.value = displayCanvas.height - 1 : y2In.value;
+      x1In.value > displayCanvas.width ? x1In.value = displayCanvas.width : x1In.value;
+      x2In.value > displayCanvas.width ? x2In.value = displayCanvas.width : x2In.value;
+      y1In.value > displayCanvas.height ? y1In.value = displayCanvas.height : y1In.value;
+      y2In.value > displayCanvas.height ? y2In.value = displayCanvas.height : y2In.value;
 
       updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkboxEnable.checked, checkboxShowLeds.checked);
     };
@@ -104,7 +104,7 @@ function updateCanvas() {
     if (device.enabled) {
       canvasCtx.globalAlpha = 0.6;
       canvasCtx.fillStyle = `rgb(${device.sizeX % 255}, ${device.sizeY % 255}, ${i * 100 % 255}, 10)`;
-      canvasCtx.fillRect(device.x1, device.y1, device.x2 + 1, device.y2 + 1);
+      canvasCtx.fillRect(device.x1, device.y1, device.x2, device.y2);
       canvasCtx.globalAlpha = 1;
     }
   });

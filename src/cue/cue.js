@@ -45,9 +45,20 @@ const cue = {
 
       device.model = info[i].model;
       device.ledsCount = info[i].ledsCount;
+
+      device.sizeX = positions[i][0].width;
+      device.sizeY = positions[i][0].height;
+
       if (positions[i]) {
-        device.sizeX = positions[i].reduce((acc, curr) => Math.max(curr.left, acc), 0);
-        device.sizeY = positions[i].reduce((acc, curr) => Math.max(curr.top, acc), 0);
+        for (let j = 0; j < positions[i].length; j++) {
+          const pos = positions[i][j];
+          if (pos.left + pos.width > device.sizeX) {
+            device.sizeX = pos.left + pos.width + 1;
+          }
+          if (pos.top + pos.height > device.sizeY) {
+            device.sizeY = pos.top + pos.height + 1;
+          }
+        }
       } else {
         device.sizeX = 1;
         device.sizeY = 1;

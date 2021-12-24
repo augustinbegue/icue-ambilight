@@ -49,8 +49,8 @@ const amibilight = {
       }
 
       this.imgDataCoordinates.push(positions[i].map(p => {
-        const deviceXScale = (device.x2 - device.x1) / (device.sizeX);
-        const deviceYScale = (device.y2 - device.y1) / (device.sizeY);
+        const deviceXScale = (device.x2 - device.x1) / (device.sizeX - startX);
+        const deviceYScale = (device.y2 - device.y1) / (device.sizeY - startY);
 
         return {
           ledId: p.ledId,
@@ -95,18 +95,30 @@ const amibilight = {
     return colors = imgDataCoordinates.map((p) => {
       let imgData = this.ctx1.getImageData(p.sx, p.sy, p.sw, p.sh);
 
+      imgData = imgData.data;
+
+      let r = 0, g = 0, b = 0;
+      for (let i = 0; i < imgData.length; i += 4) {
+        r += imgData[i];
+        g += imgData[i + 1];
+        b += imgData[i + 2];
+      }
+
+      let num = (imgData.length / 4);
+      r = Math.round(r / num);
+      g = Math.round(g / (imgData.length / 4));
+      b = Math.round(b / (imgData.length / 4));
+
       if (device.showLeds) {
-        this.layoutCtx.fillStyle = `rgba(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]}, 0.5)`;
+        this.layoutCtx.fillStyle = `rgb(${r}, ${g}, ${b})`;
         this.layoutCtx.fillRect(p.sx, p.sy, p.sw, p.sh);
       }
 
-      imgData = imgData.data;
-
       return {
         ledId: p.ledId,
-        r: imgData[0],
-        g: imgData[1],
-        b: imgData[2]
+        r: r,
+        g: g,
+        b: b
       };
     });
   },
