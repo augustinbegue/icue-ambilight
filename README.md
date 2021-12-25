@@ -29,6 +29,15 @@ Download the latest release [here](https://github.com/augustinbegue/icue-ambilig
 
 See [Q&A.md](./Q&A.md).
 
+## 🆘 Contribute
+
+If you're a developer/user, there are many ways you could help this project:
+
+-   [Open an issue](https://github.com/augustinbegue/icue-ambilight/issues/new/choose)/[Ask a question](https://github.com/augustinbegue/icue-ambilight/discussions) if you encounter any particular problem.
+-   Try to find from where the problem comes in issues you can reproduce (any kind of information is helpful!)
+-   Share your features ideas by starting a [Discussion](https://github.com/augustinbegue/icue-ambilight/discussions)/[Opening an issue](https://github.com/augustinbegue/icue-ambilight/issues/new/choose).
+-   Implement or try to solve someting listed in the issues. Any kind of contribution is welcome and as long as you write understandable code we will be able to work together!
+
 ## ⚒️ For developpers :
 
 ![GitHub issues](https://img.shields.io/github/issues/augustinbegue/icue-ambilight?style=flat-square)
