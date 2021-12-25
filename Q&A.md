@@ -1,6 +1,6 @@
-<b>⚠️🚨 Before going further, please check that you have installed [iCue](https://www.corsair.com/us/en/icue) and [enabled the SDK](#how-to-enable-the-sdk-) in iCue's settings 🚨⚠️</b>
+### <b>⚠️🚨 Before going further, please check that you have installed [iCue](https://www.corsair.com/us/en/icue) and [enabled the SDK](#how-to-enable-the-sdk-) in iCue's settings 🚨⚠️</b>
 
-Summary:
+## Summary:
 
 -   [How to enable the SDK](#how-to-enable-the-sdk-)
 -   [My Device/Peripheral is not working](#my-deviceperipheral-is-not-working-)
