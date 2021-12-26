@@ -33,10 +33,10 @@ See [Q&A.md](./Q&A.md).
 
 If you're a developer/user, there are many ways you could help this project:
 
--   [Open an issue](https://github.com/augustinbegue/icue-ambilight/issues/new/choose)/[Ask a question](https://github.com/augustinbegue/icue-ambilight/discussions) if you encounter any particular problem.
--   Try to find from where the problem comes in issues you can reproduce (any kind of information is helpful!)
--   Share your features ideas by starting a [Discussion](https://github.com/augustinbegue/icue-ambilight/discussions)/[Opening an issue](https://github.com/augustinbegue/icue-ambilight/issues/new/choose).
--   Implement or try to solve someting listed in the issues. Any kind of contribution is welcome and as long as you write understandable code we will be able to work together!
+- [Open an issue](https://github.com/augustinbegue/icue-ambilight/issues/new/choose)/[Ask a question](https://github.com/augustinbegue/icue-ambilight/discussions) if you encounter any particular problem.
+- Try to find from where the problem comes in issues you can reproduce (any kind of information is helpful!)
+- Share your features ideas by starting a [Discussion](https://github.com/augustinbegue/icue-ambilight/discussions)/[Opening an issue](https://github.com/augustinbegue/icue-ambilight/issues/new/choose).
+- Implement or try to solve someting listed in the issues. Any kind of contribution is welcome and as long as you write understandable code we will be able to work together!
 
 ## ⚒️ For developpers :
 
@@ -46,7 +46,12 @@ If you're a developer/user, there are many ways you could help this project:
 
 ### Build instructions :
 
--   Make sure you have installed the prerequisites for the [cue-sdk](https://github.com/CorsairOfficial/cue-sdk-node) package to work properly.
--   Install the required packages with `npm i --also=dev`
--   Start the application with `npm run start`
--   Build the application with `npm run dist`
+- Make sure you have installed the prerequisites for the [cue-sdk](https://github.com/CorsairOfficial/cue-sdk-node) package to work properly.
+- Install the required packages with `npm i --also=dev`
+- Start the application with `npm run watch`
+- Build the application with `npm run compile`
+
+## 🙌 Credits
+
+- [cue-sdk-node](https://github.com/CorsairOfficial/cue-sdk-node)
+- [vite-electron-builder](https://github.com/cawa-93/vite-electron-builder)

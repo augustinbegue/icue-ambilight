@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>iCue Ambilight</title>
+  <meta http-equiv="Content-Security-Policy"
+        content="script-src 'self';">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"
+        href="./src/css/bulmaswatch.min.css">
+  <link rel="stylesheet"
+        href="./src/css/titlebar.css">
+  <link rel="stylesheet"
+        href="./src/css/app.css">
+  <link rel="stylesheet"
+        href="./src/css/all.min.css">
+</head>
+
+<body>
+  <header id="titlebar">
+    <div id="window-title">
+      <span>iCue Ambilight</span>
+    </div>
+    <div id="window-controls">
+      <div class="button-titlebar"
+           id="min-button">
+        <img class="icon-titlebar"
+             src="./assets/img/icons/min-w-10.png"
+             draggable="false" />
+      </div>
+
+      <div class="button-titlebar"
+           id="max-button">
+        <img class="icon-titlebar"
+             src="./assets/img/icons/max-w-10.png"
+             draggable="false" />
+      </div>
+
+      <div class="button-titlebar"
+           id="restore-button">
+        <img class="icon-titlebar"
+             src="./assets/img/icons/restore-w-10.png"
+             draggable="false" />
+      </div>
+
+      <div class="button-titlebar"
+           id="close-button">
+        <img class="icon-titlebar"
+             src="./assets/img/icons/close-w-10.png"
+             draggable="false" />
+      </div>
+    </div>
+  </header>
+  <div id="main">
+    <div id="error-container">
+      <button id="error-close"
+              class="button is-text">
+        <i class="fas fa-times"
+           aria-hidden="true"></i>
+      </button>
+      <div id="error-field"></div>
+    </div>
+    <div class="app-container">
+      <div class="navbar-container">
+        <nav class="panel"
+             style="background-color: #242424">
+          <a class="panel-block is-active"
+             id="sourcesContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-desktop"
+                 aria-hidden="true"></i>
+            </span>
+            Sources
+          </a>
+          <a class="panel-block"
+             id="layoutContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-layer-group"
+                 aria-hidden="true"></i>
+            </span>
+            Layout
+          </a>
+          <a class="panel-block"
+             id="captureContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-video"
+                 aria-hidden="true"></i>
+            </span>
+            Capture
+          </a>
+          <a class="panel-block"
+             id="settingsContainerButton">
+            <span class="panel-icon">
+              <i class="fas fa-cog"
+                 aria-hidden="true"></i>
+            </span>
+            Settings
+          </a>
+        </nav>
+      </div>
+      <div class="content-container">
+        <section class="section"
+                 id="sourcesContainer">
+          <div class="container">
+            <h1 class="title is-5"
+                id="refreshSources">Sources <button class="button is-rounded is-small">Refresh</button>
+            </h1>
+            <div id="sources"
+                 style="display: flex; flex-wrap: wrap;">
+
+            </div>
+          </div>
+        </section>
+        <section class="section is-hidden"
+                 id="layoutContainer">
+          <div class="container">
+            <h1 class="title is-5"
+                id="refreshSources">Layout</h1>
+            <div id="display">
+
+            </div>
+            <div id="layout"
+                 style="display: flex; flex-wrap: wrap;">
+
+            </div>
+          </div>
+        </section>
+        <section class="section is-hidden"
+                 id="captureContainer">
+          <div class="container">
+            <h1 class="title is-5">
+              Capture previews
+            </h1>
+            <div id="captures"
+                 class="columns">
+              <div class="column">
+                <p><b>Video capture :</b></p>
+                <video id="video"
+                       autoplay
+                       controls></video>
+              </div>
+              <div class="column">
+                <p><b>Leds Canvas :</b></p>
+                <!-- <p>Before black bar detection :</p>
+                <canvas id="c2" style="height: auto; width: 100%;"></canvas>
+                <p>After black bar detection :</p> -->
+                <canvas id="c1"
+                        style="height: auto; width: 100%;"></canvas>
+              </div>
+            </div>
+            <h1 class="title is-5">
+              Capture settings
+            </h1>
+            <div class="columns">
+              <div class="column">
+                <p><b>Blur :</b></p>
+                <input class="input"
+                       type="number"
+                       name="blur"
+                       id="blur"
+                       placeholder="4"
+                       style="max-width: 60px; margin: 0px 4px 0px 4px;"
+                       value="0">
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="section is-hidden"
+                 id="settingsContainer">
+          <div class="container">
+            <h1 class="title is-5">Support</h1>
+            <div style="display: inline-flex; flex-direction: column; margin-bottom: 1.25em;">
+              <a href="https://github.com/augustinbegue/icue-ambilight/issues/new/choose"
+                 target="_blank"
+                 class="button is-rounded"
+                 style="margin-bottom: 0.75em;">
+                <span class="icon">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <span>Report an issue</span>
+              </a>
+              <a class="button is-rounded"
+                 href="https://github.com/augustinbegue/icue-ambilight/discussions/categories/q-a"
+                 target="_blank">
+                <span class="icon">
+                  <i class="fas fa-question-circle"></i>
+                </span>
+                <span>Ask a Question</span>
+              </a>
+            </div>
+            <h1 class="title is-5">Devices Connected</h1>
+            <div class="box"
+                 style="width: auto;">
+              <div id="devices"
+                   class="content">
+
+              </div>
+            </div>
+            <h1 class="title is-5">About</h1>
+            <p>icue-ambilight is a free software created by <a href="https://begue.cc"
+                 target="_blank">Augustin BÉGUÉ</a>. It is
+              distributed under the <a href="https://github.com/augustinbegue/icue-ambilight/blob/master/LICENSE"
+                 target="_blank">MPL2.0</a>
+              license.</p>
+            <p>This project is hosted on <a href="https://github.com/augustinbegue/icue-ambilight"
+                 target="_blank">Github</a>.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="./src/index.ts"
+          type="module"></script>
+</body>
+
+</html>
