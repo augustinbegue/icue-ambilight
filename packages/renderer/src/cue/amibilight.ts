@@ -1,9 +1,8 @@
-const sdk = require('cue-sdk');
-let config = JSON.parse(localStorage.getItem('config'));
+let config = window.store.get('config') as StoredConfig;
 
 export const amibilight = {
   init: function (positions, devices) {
-    config = JSON.parse(localStorage.getItem('config'));
+    config = window.store.get('config') as StoredConfig;
     this.c1 = document.getElementById('c1');
     this.ctx1 = this.c1.getContext('2d');
 
@@ -15,7 +14,7 @@ export const amibilight = {
         b: 0,
       };
 
-      localStorage.setItem('config', JSON.stringify(config));
+      window.store.set('config', JSON.stringify(config));
     }
 
     this.reload(positions, devices);
@@ -71,8 +70,8 @@ export const amibilight = {
     for (let i = 0; i < this.positions.length; i++) {
       if (this.positions[i].length > 0) {
         const colors = this.getColors(i, this.imgDataCoordinates[i]);
-        sdk.CorsairSetLedsColorsBufferByDeviceIndex(i, colors);
-        sdk.CorsairSetLedsColorsFlushBuffer();
+        window.cue.CorsairSetLedsColorsBufferByDeviceIndex(i, colors);
+        window.cue.CorsairSetLedsColorsFlushBuffer();
       }
     }
   },
@@ -81,7 +80,7 @@ export const amibilight = {
     const device = this.devices[index];
 
     if (!device.enabled) {
-      return colors = imgDataCoordinates.map((p) => {
+      return imgDataCoordinates.map((p) => {
         return {
           ledId: p.ledId,
           r: config.disabledColor.r,
@@ -91,7 +90,7 @@ export const amibilight = {
       });
     }
 
-    return colors = imgDataCoordinates.map((p) => {
+    return imgDataCoordinates.map((p) => {
       let imgData = this.ctx1.getImageData(p.sx, p.sy, p.sw, p.sh);
 
       imgData = imgData.data;

@@ -1,18 +1,17 @@
-const { processor } = require('./processor');
-const { cue } = require('../cue/cue');
-const { getSources, startCapture } = require('.');
+import { processor } from './processor';
+import { cue } from '../cue/cue';
+import { getSources, startCapture } from './index';
 
 export function refreshSources() {
   const sourcesEl = document.getElementById('sources');
 
   getSources().then((sources) => {
-    let selectedSource = parseInt(localStorage.getItem('selectedSource')) || 0;
+    let selectedSource = window.store.get('selectedSource') || 0;
 
     console.log(selectedSource);
 
     sourcesEl.innerHTML = '';
     for (const i in sources) {
-      sources[i].thumbnail = sources[i].thumbnail.toDataURL();
       sourcesEl.innerHTML += `
       <div id="${i}" class="source box ${i == 0 ? 'selected' : ''}" style="margin: 16px;">
         <figure class="image is-16by9">
@@ -44,7 +43,7 @@ export function refreshSources() {
 }
 
 function updateSelectedSource(sourcesButtons, selectedSource) {
-  localStorage.setItem('selectedSource', selectedSource);
+  window.store.set('selectedSource', selectedSource);
 
   sourcesButtons.forEach((_el, i) => {
     const butt = document.getElementById(i);
@@ -62,7 +61,7 @@ function updateSelectedSource(sourcesButtons, selectedSource) {
 export function refreshDeviceInfo() {
   const info = cue.devices;
 
-  devicesEl = document.getElementById('devices');
+  const devicesEl = document.getElementById('devices');
 
   if (info && info.length > 0) {
     info.forEach((device, i) => {

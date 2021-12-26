@@ -8,7 +8,7 @@ import { URL } from 'url';
  */
 const ALLOWED_ORIGINS_AND_PERMISSIONS = new Map<string, Set<'clipboard-read' | 'media' | 'display-capture' | 'mediaKeySystem' | 'geolocation' | 'notifications' | 'midi' | 'midiSysex' | 'pointerLock' | 'fullscreen' | 'openExternal' | 'unknown'>>(
   import.meta.env.DEV && import.meta.env.VITE_DEV_SERVER_URL
-    ? [[new URL(import.meta.env.VITE_DEV_SERVER_URL).origin, new Set]]
+    ? [[new URL(import.meta.env.VITE_DEV_SERVER_URL).origin, new Set(['media', 'fullscreen'])]]
     : [],
 );
 

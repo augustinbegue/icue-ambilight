@@ -39,6 +39,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "cue-sdk": "^2.2.0",
+    "electron-store": "^8.0.1",
     "electron-updater": "4.6.5"
   },
   "repository": {

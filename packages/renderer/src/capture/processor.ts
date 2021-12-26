@@ -1,15 +1,16 @@
-const { cue } = require('../cue/cue');
-const config = JSON.parse(localStorage.getItem('config'));
+import { cue } from '../cue/cue';
+
+const config = window.store.get('config') as StoredConfig;
 
 export const processor = {
   timerCallback: function () {
-    if (this.video.paused || this.video.ended) {
+    if (this.video?.paused || this.video?.ended) {
       return;
     }
     this.computeFrame();
-    const fun = this.timerCallback;
+    const self = this;
     setTimeout(function () {
-      fun();
+      self.timerCallback();
     }, 0);
   },
 
@@ -55,7 +56,7 @@ export const processor = {
     if (config.blur === undefined) {
       config.blur = 0;
     }
-    localStorage.setItem('config', JSON.stringify(config));
+    window.store.set('config', config);
     self.blur.value = config.blur;
 
     self.ctx1.filter = 'blur(' + config.blur + 'px)';
@@ -67,7 +68,7 @@ export const processor = {
       self.ctx1.filter = 'blur(' + self.blur.value + 'px)';
       config.blur = self.blur.value;
 
-      localStorage.setItem('config', JSON.stringify(config));
+      window.store.set('config', config);
     };
   },
 

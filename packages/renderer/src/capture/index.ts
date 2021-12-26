@@ -1,16 +1,14 @@
-import { desktopCapturer } from 'electron';
-
-function getSources() {
+export function getSources() {
   return new Promise((resolve, reject) => {
-    desktopCapturer.getSources({ types: ['screen'] })
-      .then(async (sources) => {
+    window.electron.ipcRenderer.invoke('dekstop-capture-get-sources', { types: ['screen'] })
+      .then((sources) => {
         resolve(sources);
       })
       .catch(e => reject(e));
   });
 }
 
-async function startCapture(source) {
+export async function startCapture(source: any) {
   try {
     const stream = await navigator.mediaDevices.getUserMedia(<any>{
       audio: false,
@@ -37,6 +35,3 @@ function handleStream(stream: MediaProvider) {
 function handleError(e: any) {
   console.error(e);
 }
-
-exports.startCapture = startCapture;
-exports.getSources = getSources;

@@ -1,4 +1,3 @@
-import * as sdk from 'cue-sdk';
 import { amibilight } from './amibilight';
 
 /**
@@ -20,8 +19,8 @@ function displayError(message) {
 
 export const cue = {
   init: async function () {
-    this.details = sdk.CorsairPerformProtocolHandshake();
-    this.errCode = sdk.CorsairGetLastError();
+    this.details = window.cue.CorsairPerformProtocolHandshake();
+    this.errCode = window.cue.CorsairGetLastError();
 
     this.info = [];
     this.positions = [];
@@ -34,8 +33,8 @@ export const cue = {
     this.info = this.getDevicesInfo();
 
     for (let i = 0; i < this.info.length; i++) {
-      if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
-        this.positions[i] = sdk.CorsairGetLedPositionsByDeviceIndex(i);
+      if (this.info[i].capsMask & window.cue.CorsairDeviceCaps.CDC_Lighting) {
+        this.positions[i] = window.cue.CorsairGetLedPositionsByDeviceIndex(i);
       }
     }
 
@@ -47,7 +46,7 @@ export const cue = {
   parseDevicesInfo: function (info, positions) {
     const devices = [];
 
-    const previousDevices = JSON.parse(localStorage.getItem('devices'));
+    const previousDevices = window.store.get('devices');
 
     for (let i = 0; i < info.length; i++) {
       devices[i] = {};
@@ -103,8 +102,8 @@ export const cue = {
     };
 
     for (let i = 0; i < this.info.length; i++) {
-      if (this.info[i].capsMask & sdk.CorsairDeviceCaps.CDC_Lighting) {
-        position = sdk.CorsairGetLedPositionsByDeviceIndex(i);
+      if (this.info[i].capsMask & window.cue.CorsairDeviceCaps.CDC_Lighting) {
+        const position = window.cue.CorsairGetLedPositionsByDeviceIndex(i);
         const newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0) / position.reduce((acc, curr) => Math.max(curr.width, acc), 0);
         if (newX > extremums.maxX) {
           extremums.maxX = newX;
@@ -120,12 +119,12 @@ export const cue = {
   },
 
   getDevicesInfo: function () {
-    const n = sdk.CorsairGetDeviceCount();
+    const n = window.cue.CorsairGetDeviceCount();
 
     const info = [];
 
     for (let i = 0; i < n; ++i) {
-      info[i] = sdk.CorsairGetDeviceInfo(i);
+      info[i] = window.cue.CorsairGetDeviceInfo(i);
     }
 
     return info;

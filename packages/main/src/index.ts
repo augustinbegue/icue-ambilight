@@ -1,8 +1,9 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
-import * as cue from './cue/cue';
+import { app, BrowserWindow, ipcMain, shell, desktopCapturer } from 'electron';
 import { join } from 'path';
 import { URL } from 'url';
 import './security-restrictions';
+const Store = require('electron-store');
+Store.initRenderer();
 
 const isSingleInstance = app.requestSingleInstanceLock();
 const isDevelopment = import.meta.env.MODE === 'development';
@@ -23,6 +24,8 @@ const createWindow = async () => {
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like iframe or Electron's BrowserView. https://www.electronjs.org/docs/latest/api/webview-tag#warning
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       nodeIntegration: true,
+      backgroundThrottling: false,
+      devTools: isDevelopment,
     },
   });
 
@@ -49,18 +52,27 @@ const createWindow = async () => {
     ? import.meta.env.VITE_DEV_SERVER_URL
     : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
 
+  // Handle Desktop Capture trough ipcMain
+  ipcMain.handle(
+    'dekstop-capture-get-sources',
+    async (event, opts) => {
+      const sources = await desktopCapturer.getSources(opts);
 
-  await mainWindow.loadURL(pageUrl);
+      for (let i = 0; i < sources.length; i++) {
+        const source = sources[i];
+        source.thumbnail = source.thumbnail.toDataURL();
+      }
+
+      return sources;
+    });
 
   // Handle window events trough ipcMain
-
   ipcMain.on('win-minimize', () => { mainWindow?.minimize(); });
   ipcMain.on('win-maximize', () => { mainWindow?.maximize(); });
   ipcMain.on('win-unmaximize', () => { mainWindow?.unmaximize(); });
   ipcMain.on('win-close', () => { mainWindow?.close(); });
 
   // Handle window events trough BrowserWindow
-
   mainWindow.on('maximize', () => { mainWindow?.webContents.send('maximized'); });
   mainWindow.on('unmaximize', () => { mainWindow?.webContents.send('unmaximized'); });
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -68,8 +80,7 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  // Launch cue
-  cue.init();
+  await mainWindow.loadURL(pageUrl);
 };
 
 app.on('second-instance', () => {

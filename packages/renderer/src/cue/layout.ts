@@ -1,10 +1,9 @@
-const { cue } = require('./cue');
-const { processor } = require('../capture/processor');
-const { amibilight } = require('./amibilight');
+import { cue } from './cue';
+import { processor } from '../capture/processor';
+import { amibilight } from './amibilight';
 
-const displayCanvas = document.createElement('canvas');
-exports.displayCanvas = displayCanvas;
-canvasCtx = displayCanvas.getContext('2d');
+export const displayCanvas = document.createElement('canvas');
+const canvasCtx = displayCanvas.getContext('2d');
 
 // predefined colors for the devices
 const colors = [
@@ -44,7 +43,7 @@ export function initLayout() {
   cue.devices.forEach((device, i) => {
     updateCanvas(i, device);
 
-    layoutEl = document.getElementById('layout');
+    const layoutEl = document.getElementById('layout');
     layoutEl.innerHTML += `
     <div id="deviceForm${i}" class="box" style="margin: 8px; padding: 16px; background: ${colors[i]}">
       <p>#${i + 1} - ${device.model}</p>
@@ -105,7 +104,7 @@ function updateLayout(i, x1, y1, x2, y2, enabled, showLeds) {
   cue.devices[i].enabled = enabled;
   cue.devices[i].showLeds = showLeds;
 
-  localStorage.setItem('devices', JSON.stringify(cue.devices));
+  window.store.set('devices', cue.devices);
   amibilight.reload(cue.positions, cue.devices);
 
   updateCanvas();

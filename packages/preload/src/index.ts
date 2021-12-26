@@ -1,4 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import * as sdk from 'cue-sdk';
+const Store = require('electron-store');
 
 /**
  * The "Main World" is the JavaScript context that your main renderer code runs in.
@@ -38,5 +40,28 @@ contextBridge.exposeInMainWorld('electron', {
       console.log('on', channel);
       return ipcRenderer.on(channel, listener);
     },
+    invoke: (channel: string, ...args: any[]) => {
+      console.log('invoke', channel, args);
+      return ipcRenderer.invoke(channel, ...args);
+    },
+  },
+});
+
+/**
+ * Expose Cue SDK
+ */
+contextBridge.exposeInMainWorld('cue', sdk);
+
+/**
+ * Expose electron-store
+ */
+contextBridge.exposeInMainWorld('store', {
+  get: (key: string) => {
+    const store = new Store();
+    return store.get(key);
+  },
+  set: (key: string, value: any) => {
+    const store = new Store();
+    return store.set(key, value);
   },
 });

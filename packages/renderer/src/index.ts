@@ -1,14 +1,19 @@
+import { processor } from './capture/processor';
+import { refreshDeviceInfo, refreshSources } from './capture/sources';
+import { cue } from './cue/cue';
+import { initLayout } from './cue/layout';
 import { Panels } from './gui/Panels';
 
 function initConfig() {
-    localStorage.setItem('config', `${JSON.stringify({
+    window.store.set('config', {
         refreshrate: 30,
+        blur: 0,
         disabledColor: {
             r: 0,
             g: 0,
             b: 0,
         },
-    })}`);
+    });
 }
 
 function handleWindowControls() {
@@ -51,11 +56,9 @@ function handleWindowControls() {
     }
 }
 
-const configstr = localStorage.getItem('config');
+const config = window.store.get('config') as StoredConfig;
 
-if (configstr) {
-    const config = JSON.parse(configstr);
-
+if (config) {
     if (!config.disabledColor || !config.refreshrate) {
         initConfig();
     }
@@ -63,5 +66,21 @@ if (configstr) {
     initConfig();
 }
 
-handleWindowControls();
-new Panels();
+// When document has loaded, initialise the app
+document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+        // Window controls
+        handleWindowControls();
+
+        // Layout panels
+        new Panels();
+
+        // Amibilight initialisation
+        cue.init();
+        refreshSources();
+        refreshDeviceInfo();
+        processor.doLoad().then(() => {
+            initLayout();
+        });
+    }
+};

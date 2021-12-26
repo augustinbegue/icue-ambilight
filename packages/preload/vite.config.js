@@ -1,6 +1,6 @@
-import {chrome} from '../../.electron-vendors.cache.json';
-import {join} from 'path';
-import {builtinModules} from 'module';
+import { chrome } from '../../.electron-vendors.cache.json';
+import { join } from 'path';
+import { builtinModules } from 'module';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -30,6 +30,7 @@ const config = {
     rollupOptions: {
       external: [
         'electron',
+        'cue-sdk',
         ...builtinModules,
       ],
       output: {
