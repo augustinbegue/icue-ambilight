@@ -1,17 +1,45 @@
 {
   "name": "icue-ambilight",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Ambilight for iCue devices",
-  "main": "main.js",
-  "devDependencies": {
-    "electron": "^16.0.2",
-    "electron-builder": "^22.10.3",
-    "electron-packager": "^15.2.0"
+  "engines": {
+    "node": ">=v16.13",
+    "npm": ">=8.1"
   },
+  "main": "packages/main/dist/index.cjs",
   "scripts": {
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "build": "node scripts/build.js",
+    "precompile": "cross-env MODE=production npm run build",
+    "compile": "electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
+    "pretest": "npm run build",
+    "test": "node tests/app.spec.js",
+    "watch": "node scripts/watch.js",
+    "lint": "eslint . --ext js,ts",
+    "typecheck-main": "tsc --noEmit -p packages/main/tsconfig.json",
+    "typecheck-preload": "tsc --noEmit -p packages/preload/tsconfig.json",
+    "typecheck-renderer": "tsc --noEmit -p packages/renderer/tsconfig.json",
+    "typecheck": "npm run pretypecheck-renderer && npm run typecheck-main && npm run typecheck-preload && npm run typecheck-renderer",
+    "pretypecheck-renderer": "dts-cb -i packages/preload/src/**/*.ts -o packages/preload/exposedInMainWorld.d.ts"
+  },
+  "devDependencies": {
+    "@types/electron-devtools-installer": "2.2.1",
+    "@typescript-eslint/eslint-plugin": "5.8.0",
+    "cross-env": "7.0.3",
+    "dts-for-context-bridge": "0.7.1",
+    "electron": "16.0.2",
+    "electron-builder": "22.14.5",
+    "electron-devtools-installer": "3.2.0",
+    "eslint": "8.5.0",
+    "nano-staged": "0.5.0",
+    "playwright": "1.17.1",
+    "simple-git-hooks": "2.7.0",
+    "typescript": "4.5.4",
+    "vite": "2.7.7"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "cue-sdk": "^2.2.0",
+    "electron-updater": "4.6.5"
   },
   "repository": {
     "type": "git",
@@ -27,14 +55,4 @@
     "url": "https://github.com/augustinbegue/icue-ambilight/issues"
   },
   "homepage": "https://github.com/augustinbegue/icue-ambilight#readme",
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.4",
-    "cue-sdk": "^2.2.0"
-  },
-  "build": {
-    "appId": "com.icueambilight.app",
-    "win": {
-      "icon": "build/icon.png"
-    }
-  }
 }
