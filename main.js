@@ -14,6 +14,7 @@ function init() {
       backgroundThrottling: false,
       contextIsolation: false,
       nodeIntegration: true,
+      nativeWindowOpen: true,
     },
     icon: nativeImage.createFromPath('./src/img/icons/icon.png')
   });
