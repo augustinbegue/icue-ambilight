@@ -1,13 +1,10 @@
-const { remote, shell } = require('electron');
-const mainProcess = remote.require('./main.js');
+const { ipcRenderer } = require('electron');
 
 const { processor } = require("./src/capture/processor");
 const { cue } = require("./src/cue/cue");
 const { Panels } = require("./src/gui/Panels");
 const { refreshSources, refreshDeviceInfo } = require("./src/capture/sources");
 const { initLayout } = require("./src/cue/layout");
-
-const win = remote.getCurrentWindow(); /* Note this is different to the html global `window` variable */
 
 let config = localStorage.getItem('config');
 
@@ -42,28 +39,34 @@ function displayError(message) {
 function handleWindowControls() {
   // Make minimise/maximise/restore/close buttons work when they are clicked
   document.getElementById('min-button').addEventListener("click", _event => {
-    win.minimize();
+    ipcRenderer.send("win-minimize");
   });
 
   document.getElementById('max-button').addEventListener("click", _event => {
-    win.maximize();
+    ipcRenderer.send("win-maximize");
   });
 
   document.getElementById('restore-button').addEventListener("click", _event => {
-    win.unmaximize();
+    ipcRenderer.send("win-unmaximize");
   });
 
   document.getElementById('close-button').addEventListener("click", _event => {
-    win.close();
+    ipcRenderer.send("win-close");
   });
 
   // Toggle maximise/restore buttons when maximisation/unmaximisation occurs
   toggleMaxRestoreButtons();
-  win.on('maximize', toggleMaxRestoreButtons);
-  win.on('unmaximize', toggleMaxRestoreButtons);
 
-  function toggleMaxRestoreButtons() {
-    if (win.isMaximized()) {
+  ipcRenderer.on("maximized", () => {
+    toggleMaxRestoreButtons(true);
+  });
+
+  ipcRenderer.on("unmaximized", () => {
+    toggleMaxRestoreButtons(false);
+  });
+
+  function toggleMaxRestoreButtons(isMaximized) {
+    if (isMaximized) {
       document.body.classList.add('maximized');
     } else {
       document.body.classList.remove('maximized');

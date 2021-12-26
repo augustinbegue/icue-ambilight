@@ -1,4 +1,4 @@
-const { app, BrowserWindow, nativeImage, shell } = require('electron');
+const { app, BrowserWindow, nativeImage, shell, ipcMain } = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -28,6 +28,34 @@ function init() {
     win = null;
   });
 
+  // Handle IPC messages
+
+  // Window events
+
+  ipcMain.on("win-minimize", function () {
+    win.minimize();
+  });
+
+  ipcMain.on("win-maximize", function () {
+    win.maximize();
+  });
+
+  ipcMain.on("win-unmaximize", function () {
+    win.unmaximize();
+  });
+
+  ipcMain.on("win-close", function () {
+    win.close();
+  });
+
+  win.on('maximize', () => {
+    win.webContents.send('maximized');
+  });
+
+  win.on('unmaximize', () => {
+    win.webContents.send('unmaximized');
+  });
+
   win.webContents.on('new-window', function (e, url) {
     e.preventDefault();
     shell.openExternal(url);
@@ -55,6 +83,3 @@ app.on('activate', () => {
     createWindow();
   }
 });;
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
