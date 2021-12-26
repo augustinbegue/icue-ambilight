@@ -25,7 +25,6 @@ const createWindow = async () => {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       nodeIntegration: true,
       backgroundThrottling: false,
-      devTools: isDevelopment,
     },
   });
 

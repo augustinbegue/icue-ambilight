@@ -61,6 +61,15 @@ app.on('web-contents-created', (_, contents) => {
    */
   contents.session.setPermissionRequestHandler((webContents, permission, callback) => {
     const { origin } = new URL(webContents.getURL());
+    const url = webContents.getURL();
+
+    console.info('Permission request:', permission, 'from', webContents.getURL());
+
+    // Local app is allowed to do anything
+    if (url.startsWith('file://')) {
+      console.info('Permission request:', permission, 'from', origin, 'is allowed: origin is local');
+      return callback(true);
+    }
 
     const permissionGranted = !!ALLOWED_ORIGINS_AND_PERMISSIONS.get(origin)?.has(permission);
     callback(permissionGranted);

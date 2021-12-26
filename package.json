@@ -10,7 +10,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "precompile": "cross-env MODE=production npm run build",
-    "compile": "electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
+    "compile": "electron-builder build",
     "pretest": "npm run build",
     "test": "node tests/app.spec.js",
     "watch": "node scripts/watch.js",
@@ -55,5 +55,20 @@
   "bugs": {
     "url": "https://github.com/augustinbegue/icue-ambilight/issues"
   },
-  "homepage": "https://github.com/augustinbegue/icue-ambilight#readme"
+  "homepage": "https://github.com/augustinbegue/icue-ambilight#readme",
+  "build": {
+    "appId": "com.augustinbegue.icue-ambilight",
+    "productName": "icue-ambilight",
+    "copyright": "Copyright © 2021 Augustin Bégué",
+    "directories": {
+      "output": "dist",
+      "buildResources": "buildResources"
+    },
+    "files": [
+      "packages/**/dist/**"
+    ],
+    "win": {
+      "icon": "buildResources/icon.png"
+    }
+  }
 }
