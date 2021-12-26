@@ -50,3 +50,8 @@ If you're a developer/user, there are many ways you could help this project:
 - Install the required packages with `npm i --also=dev`
 - Start the application with `npm run watch`
 - Build the application with `npm run compile`
+
+## 🙌 Credits
+
+- [cue-sdk-node](https://github.com/CorsairOfficial/cue-sdk-node)
+- [vite-electron-builder](https://github.com/cawa-93/vite-electron-builder)
