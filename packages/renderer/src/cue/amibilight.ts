@@ -1,10 +1,22 @@
+import { CorsairLed } from 'cue-sdk';
 let config = window.store.get('config') as StoredConfig;
 
-export const amibilight = {
-  init: function (positions, devices) {
+export class Amibilight {
+  static c1: HTMLCanvasElement | null;
+  static ctx1: CanvasRenderingContext2D | null | undefined;
+
+  static layoutC: HTMLCanvasElement | null;
+  static layoutCtx: CanvasRenderingContext2D | null | undefined;
+
+  static imgDataCoordinates: ImgDataCoordinate[][];
+  static positions: CorsairLed[][];
+  static devices: Device[];
+
+  static init(positions: CorsairLed[][], devices: Device[]) {
     config = window.store.get('config') as StoredConfig;
-    this.c1 = document.getElementById('c1');
-    this.ctx1 = this.c1.getContext('2d');
+
+    this.c1 = document.getElementById('c1') as HTMLCanvasElement;
+    this.ctx1 = this.c1?.getContext('2d');
 
     // Override the disabled color if it is not present in the config
     if (!config.disabledColor || config.disabledColor.r) {
@@ -23,9 +35,9 @@ export const amibilight = {
     setInterval(function () {
       self.updateLeds();
     }, 1000 / config?.refreshrate ? config.refreshrate : 30);
-  },
+  }
 
-  reload: function (positions, devices) {
+  static reload(positions: CorsairLed[][], devices: Device[]) {
     this.positions = positions;
     this.devices = devices;
 
@@ -61,10 +73,10 @@ export const amibilight = {
     }
 
     console.log(this.imgDataCoordinates);
-  },
+  }
 
-  updateLeds: function () {
-    this.layoutC = document.getElementById('displayCanvas');
+  static updateLeds() {
+    this.layoutC = document.getElementById('displayCanvas') as HTMLCanvasElement;
     this.layoutCtx = this.layoutC?.getContext('2d');
 
     for (let i = 0; i < this.positions.length; i++) {
@@ -74,9 +86,9 @@ export const amibilight = {
         window.cue.CorsairSetLedsColorsFlushBuffer();
       }
     }
-  },
+  }
 
-  getColors: function (index, imgDataCoordinates) {
+  static getColors(index: number, imgDataCoordinates: ImgDataCoordinate[]) {
     const device = this.devices[index];
 
     if (!device.enabled) {
@@ -91,23 +103,32 @@ export const amibilight = {
     }
 
     return imgDataCoordinates.map((p) => {
-      let imgData = this.ctx1.getImageData(p.sx, p.sy, p.sw, p.sh);
+      const imgData = this.ctx1?.getImageData(p.sx, p.sy, p.sw, p.sh);
 
-      imgData = imgData.data;
-
-      let r = 0, g = 0, b = 0;
-      for (let i = 0; i < imgData.length; i += 4) {
-        r += imgData[i];
-        g += imgData[i + 1];
-        b += imgData[i + 2];
+      if (!imgData) {
+        return {
+          ledId: p.ledId,
+          r: 0,
+          g: 0,
+          b: 0,
+        };
       }
 
-      const num = (imgData.length / 4);
-      r = Math.round(r / num);
-      g = Math.round(g / (imgData.length / 4));
-      b = Math.round(b / (imgData.length / 4));
+      const imgDataArr = imgData.data;
 
-      if (device.showLeds) {
+      let r = 0, g = 0, b = 0;
+      for (let i = 0; i < imgDataArr.length; i += 4) {
+        r += imgDataArr[i];
+        g += imgDataArr[i + 1];
+        b += imgDataArr[i + 2];
+      }
+
+      const num = (imgDataArr.length / 4);
+      r = Math.round(r / num);
+      g = Math.round(g / (imgDataArr.length / 4));
+      b = Math.round(b / (imgDataArr.length / 4));
+
+      if (device.showLeds && this.layoutCtx) {
         this.layoutCtx.fillStyle = `rgb(${r}, ${g}, ${b})`;
         this.layoutCtx.fillRect(p.sx, p.sy, p.sw, p.sh);
       }
@@ -119,5 +140,5 @@ export const amibilight = {
         b: b,
       };
     });
-  },
-};
+  }
+}

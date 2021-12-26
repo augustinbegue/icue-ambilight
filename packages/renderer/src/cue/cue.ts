@@ -1,68 +1,99 @@
-import { amibilight } from './amibilight';
+import { CorsairDeviceInfo, CorsairError, CorsairLed, CorsairProtocolHandshake } from 'cue-sdk';
+import { Amibilight } from './amibilight';
 
 /**
  * Displays the error modal on the screen
  * @param {string} message Error message to display on the screen
  */
-function displayError(message) {
+function displayError(message: string) {
   const errorContainer = document.getElementById('error-container');
   const errorField = document.getElementById('error-field');
+
+  if (!errorContainer || !errorField)
+    return;
 
   errorContainer.style.display = 'flex';
   errorField.innerHTML = message;
 
-  document.getElementById('error-close').addEventListener('click', () => {
-    const errorContainer = document.getElementById('error-container');
+  document.getElementById('error-close')?.addEventListener('click', () => {
     errorContainer.style.display = 'none';
   });
 }
 
-export const cue = {
-  init: async function () {
+export class Cue {
+  static details: CorsairProtocolHandshake;
+  static errCode: CorsairError;
+
+  static info: (CorsairDeviceInfo | undefined)[];
+  static positions: CorsairLed[][];
+  static devices: Device[];
+
+  static async init() {
     this.details = window.cue.CorsairPerformProtocolHandshake();
     this.errCode = window.cue.CorsairGetLastError();
 
     this.info = [];
     this.positions = [];
 
-    if (this.errCode === 1) {
-      console.error('The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)');
+    if (this.errCode !== CorsairError.CE_Success) {
       displayError('The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.');
+      return;
     }
 
     this.info = this.getDevicesInfo();
 
     for (let i = 0; i < this.info.length; i++) {
-      if (this.info[i].capsMask & window.cue.CorsairDeviceCaps.CDC_Lighting) {
+      if (this.info[i]?.capsMask && window.cue.CorsairDeviceCaps.CDC_Lighting) {
         this.positions[i] = window.cue.CorsairGetLedPositionsByDeviceIndex(i);
       }
     }
 
     this.devices = this.parseDevicesInfo(this.info, this.positions);
 
-    amibilight.init(this.positions, this.devices);
-  },
+    Amibilight.init(this.positions, this.devices);
+  }
 
-  parseDevicesInfo: function (info, positions) {
-    const devices = [];
+  static getDevicesInfo() {
+    const n = window.cue.CorsairGetDeviceCount();
+
+    const info = [];
+
+    for (let i = 0; i < n; ++i) {
+      info[i] = window.cue.CorsairGetDeviceInfo(i);
+    }
+
+    return info;
+  }
+
+  static parseDevicesInfo(info: (CorsairDeviceInfo | undefined)[], positions: CorsairLed[][]) {
+    const devices: Device[] = [];
 
     const previousDevices = window.store.get('devices');
 
     for (let i = 0; i < info.length; i++) {
-      devices[i] = {};
-      const device = devices[i];
+      if (!info[i]) {
+        continue;
+      }
+      const cdi = info[i] as CorsairDeviceInfo;
+
+      const device: Device = {
+        enabled: false,
+        showLeds: false,
+        model: cdi.model,
+        ledsCount: cdi.ledsCount,
+        sizeX: positions[i][0].width,
+        sizeY: positions[i][0].height,
+        x1: 0,
+        y1: 0,
+        x2: positions[i][0].width,
+        y2: positions[i][0].height,
+      };
 
       if (previousDevices && previousDevices[i] && !previousDevices[i].enabled) {
         device.enabled = false;
       } else {
         device.enabled = true;
       }
-
-      device.model = info[i].model;
-      device.ledsCount = info[i].ledsCount;
-
-      device.sizeX = positions[i][0].width;
-      device.sizeY = positions[i][0].height;
 
       if (positions[i]) {
         for (let j = 0; j < positions[i].length; j++) {
@@ -84,31 +115,29 @@ export const cue = {
         device.y1 = previousDevices[i].y1;
         device.x2 = previousDevices[i].x2;
         device.y2 = previousDevices[i].y2;
-      } else {
-        device.x1 = 0;
-        device.y1 = 0;
-        device.x2 = device.sizeX;
-        device.y2 = device.sizeY;
       }
     }
 
     return devices;
-  },
+  }
 
-  getMaxDefinition: function () {
+  static getMaxDefinition() {
     const extremums = {
       maxX: 0,
       maxY: 0,
     };
 
     for (let i = 0; i < this.info.length; i++) {
-      if (this.info[i].capsMask & window.cue.CorsairDeviceCaps.CDC_Lighting) {
+      if (this.info[i]?.capsMask && window.cue.CorsairDeviceCaps.CDC_Lighting) {
         const position = window.cue.CorsairGetLedPositionsByDeviceIndex(i);
+
         const newX = position.reduce((acc, curr) => Math.max(curr.left, acc), 0) / position.reduce((acc, curr) => Math.max(curr.width, acc), 0);
+
         if (newX > extremums.maxX) {
           extremums.maxX = newX;
         }
         const newY = position.reduce((acc, curr) => Math.max(curr.top, acc), 0) / position.reduce((acc, curr) => Math.max(curr.height, acc), 0);
+
         if (newY > extremums.maxY) {
           extremums.maxY = newY + 1;
         }
@@ -116,17 +145,5 @@ export const cue = {
     }
 
     return extremums;
-  },
-
-  getDevicesInfo: function () {
-    const n = window.cue.CorsairGetDeviceCount();
-
-    const info = [];
-
-    for (let i = 0; i < n; ++i) {
-      info[i] = window.cue.CorsairGetDeviceInfo(i);
-    }
-
-    return info;
-  },
-};
+  }
+}

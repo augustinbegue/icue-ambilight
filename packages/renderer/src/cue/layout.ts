@@ -1,9 +1,9 @@
-import { cue } from './cue';
-import { processor } from '../capture/processor';
-import { amibilight } from './amibilight';
+import { Cue } from './cue';
+import { Processor } from '../capture/processor';
+import { Amibilight } from './amibilight';
 
-export const displayCanvas = document.createElement('canvas');
-const canvasCtx = displayCanvas.getContext('2d');
+export const displayCanvas = document.createElement('canvas') as HTMLCanvasElement;
+const canvasCtx = displayCanvas.getContext('2d') as CanvasRenderingContext2D;
 
 // predefined colors for the devices
 const colors = [
@@ -21,14 +21,14 @@ const colors = [
 ];
 
 export function initLayout() {
-  const display = document.getElementById('display');
+  const display = document.getElementById('display') as HTMLDivElement;
 
   displayCanvas.id = 'displayCanvas';
 
   display.appendChild(displayCanvas);
 
-  displayCanvas.height = processor.height;
-  displayCanvas.width = processor.width;
+  displayCanvas.height = Processor.height;
+  displayCanvas.width = Processor.width;
   displayCanvas.style.margin = '4px';
   displayCanvas.style.imageRendering = 'pixelated';
 
@@ -40,10 +40,10 @@ export function initLayout() {
   canvasCtx.fill();
 
 
-  cue.devices.forEach((device, i) => {
-    updateCanvas(i, device);
+  Cue.devices.forEach((device, i) => {
+    updateCanvas();
 
-    const layoutEl = document.getElementById('layout');
+    const layoutEl = document.getElementById('layout') as HTMLDivElement;
     layoutEl.innerHTML += `
     <div id="deviceForm${i}" class="box" style="margin: 8px; padding: 16px; background: ${colors[i]}">
       <p>#${i + 1} - ${device.model}</p>
@@ -70,21 +70,21 @@ export function initLayout() {
     </div>`;
   });
 
-  cue.devices.forEach((_device, i) => {
-    const x1In = document.getElementById(`device${i}x1`);
-    const x2In = document.getElementById(`device${i}x2`);
-    const y1In = document.getElementById(`device${i}y1`);
-    const y2In = document.getElementById(`device${i}y2`);
-    const checkboxEnable = document.getElementById(`device${i}enable`);
-    const checkboxShowLeds = document.getElementById(`device${i}showleds`);
+  Cue.devices.forEach((_device, i) => {
+    const x1In = document.getElementById(`device${i}x1`) as HTMLInputElement;
+    const x2In = document.getElementById(`device${i}x2`) as HTMLInputElement;
+    const y1In = document.getElementById(`device${i}y1`) as HTMLInputElement;
+    const y2In = document.getElementById(`device${i}y2`) as HTMLInputElement;
+    const checkboxEnable = document.getElementById(`device${i}enable`) as HTMLInputElement;
+    const checkboxShowLeds = document.getElementById(`device${i}showleds`) as HTMLInputElement;
 
     const handler = function () {
-      x1In.value > displayCanvas.width ? x1In.value = displayCanvas.width : x1In.value;
-      x2In.value > displayCanvas.width ? x2In.value = displayCanvas.width : x2In.value;
-      y1In.value > displayCanvas.height ? y1In.value = displayCanvas.height : y1In.value;
-      y2In.value > displayCanvas.height ? y2In.value = displayCanvas.height : y2In.value;
+      const x1 = parseInt(x1In.value) > displayCanvas.width ? displayCanvas.width : parseInt(x1In.value);
+      const x2 = parseInt(x2In.value) > displayCanvas.width ? displayCanvas.width : parseInt(x2In.value);
+      const y1 = parseInt(y1In.value) > displayCanvas.height ? displayCanvas.height : parseInt(y1In.value);
+      const y2 = parseInt(y2In.value) > displayCanvas.height ? displayCanvas.height : parseInt(y2In.value);
 
-      updateLayout(i, x1In.value, y1In.value, x2In.value, y2In.value, checkboxEnable.checked, checkboxShowLeds.checked);
+      updateLayout(i, x1, y1, x2, y2, checkboxEnable.checked, checkboxShowLeds.checked);
     };
 
     x1In.onchange = handler;
@@ -96,16 +96,16 @@ export function initLayout() {
   });
 }
 
-function updateLayout(i, x1, y1, x2, y2, enabled, showLeds) {
-  cue.devices[i].x1 = parseInt(x1);
-  cue.devices[i].x2 = parseInt(x2);
-  cue.devices[i].y1 = parseInt(y1);
-  cue.devices[i].y2 = parseInt(y2);
-  cue.devices[i].enabled = enabled;
-  cue.devices[i].showLeds = showLeds;
+function updateLayout(i: number, x1: number, y1: number, x2: number, y2: number, enabled: boolean, showLeds: boolean) {
+  Cue.devices[i].x1 = x1;
+  Cue.devices[i].x2 = x2;
+  Cue.devices[i].y1 = y1;
+  Cue.devices[i].y2 = y2;
+  Cue.devices[i].enabled = enabled;
+  Cue.devices[i].showLeds = showLeds;
 
-  window.store.set('devices', cue.devices);
-  amibilight.reload(cue.positions, cue.devices);
+  window.store.set('devices', Cue.devices);
+  Amibilight.reload(Cue.positions, Cue.devices);
 
   updateCanvas();
 }
@@ -114,7 +114,7 @@ function updateCanvas() {
   canvasCtx.fillStyle = 'white';
   canvasCtx.fillRect(0, 0, displayCanvas.width, displayCanvas.height);
 
-  cue.devices.forEach((device, i) => {
+  Cue.devices.forEach((device, i) => {
     if (device.enabled) {
       canvasCtx.globalAlpha = 0.6;
       canvasCtx.fillStyle = colors[i];

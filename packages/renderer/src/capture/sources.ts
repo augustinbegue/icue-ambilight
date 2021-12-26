@@ -1,19 +1,22 @@
-import { processor } from './processor';
-import { cue } from '../cue/cue';
+import { Processor } from './processor';
+import { Cue } from '../cue/cue';
 import { getSources, startCapture } from './index';
 
 export function refreshSources() {
   const sourcesEl = document.getElementById('sources');
 
-  getSources().then((sources) => {
+  if (!sourcesEl)
+    return;
+
+  getSources().then((sources: any) => {
     let selectedSource = window.store.get('selectedSource') || 0;
 
     console.log(selectedSource);
 
     sourcesEl.innerHTML = '';
-    for (const i in sources) {
+    for (let i = 0; i < sources.length; i++) {
       sourcesEl.innerHTML += `
-      <div id="${i}" class="source box ${i == 0 ? 'selected' : ''}" style="margin: 16px;">
+      <div id="${i}" class="source box ${i === 0 ? 'selected' : ''}" style="margin: 16px;">
         <figure class="image is-16by9">
           <img src="${sources[i].thumbnail}">
         </figure>
@@ -25,7 +28,11 @@ export function refreshSources() {
 
     startCapture(sources[selectedSource]);
 
-    const sourcesButtons = document.getElementById('sources').childNodes;
+    const sourcesButtons = document.getElementById('sources')?.childNodes as NodeListOf<HTMLButtonElement>;
+
+    if (!sourcesButtons)
+      return;
+
     updateSelectedSource(sourcesButtons, selectedSource);
 
     for (const button of sourcesButtons) {
@@ -36,17 +43,17 @@ export function refreshSources() {
         selectedSource = parseInt(button.id);
         updateSelectedSource(sourcesButtons, selectedSource);
 
-        processor.doLoad();
+        Processor.doLoad();
       });
     }
   });
 }
 
-function updateSelectedSource(sourcesButtons, selectedSource) {
+function updateSelectedSource(sourcesButtons: NodeListOf<HTMLButtonElement>, selectedSource: number) {
   window.store.set('selectedSource', selectedSource);
 
   sourcesButtons.forEach((_el, i) => {
-    const butt = document.getElementById(i);
+    const butt = document.getElementById(i.toString());
 
     if (butt) {
       if (i == selectedSource) {
@@ -59,11 +66,11 @@ function updateSelectedSource(sourcesButtons, selectedSource) {
 }
 
 export function refreshDeviceInfo() {
-  const info = cue.devices;
+  const info = Cue.devices;
 
   const devicesEl = document.getElementById('devices');
 
-  if (info && info.length > 0) {
+  if (devicesEl && info && info.length > 0) {
     info.forEach((device, i) => {
       if (i != 0) {
         devicesEl.innerHTML += '<hr>';

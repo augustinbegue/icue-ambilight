@@ -1,6 +1,6 @@
-import { processor } from './capture/processor';
+import { Processor } from './capture/processor';
 import { refreshDeviceInfo, refreshSources } from './capture/sources';
-import { cue } from './cue/cue';
+import { Cue } from './cue/cue';
 import { initLayout } from './cue/layout';
 import { Panels } from './gui/Panels';
 
@@ -76,10 +76,10 @@ document.onreadystatechange = () => {
         new Panels();
 
         // Amibilight initialisation
-        cue.init();
+        Cue.init();
         refreshSources();
         refreshDeviceInfo();
-        processor.doLoad().then(() => {
+        Processor.doLoad().then(() => {
             initLayout();
         });
     }

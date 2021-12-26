@@ -59,7 +59,7 @@ const createWindow = async () => {
 
       for (let i = 0; i < sources.length; i++) {
         const source = sources[i];
-        source.thumbnail = source.thumbnail.toDataURL();
+        source.thumbnail = source.thumbnail.toDataURL() as any;
       }
 
       return sources;
