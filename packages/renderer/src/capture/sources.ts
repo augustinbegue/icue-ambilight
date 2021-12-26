@@ -11,8 +11,6 @@ export function refreshSources() {
   getSources().then((sources: any) => {
     let selectedSource = window.store.get('selectedSource') || 0;
 
-    console.log(selectedSource);
-
     sourcesEl.innerHTML = '';
     for (let i = 0; i < sources.length; i++) {
       sourcesEl.innerHTML += `

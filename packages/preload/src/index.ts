@@ -33,15 +33,12 @@ contextBridge.exposeInMainWorld('versions', process.versions);
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
     send: (channel: string, ...args: any[]) => {
-      console.log('send', channel, args);
       return ipcRenderer.send(channel, ...args);
     },
     on: (channel: string, listener: (event: any, ...args: any[]) => void) => {
-      console.log('on', channel);
       return ipcRenderer.on(channel, listener);
     },
     invoke: (channel: string, ...args: any[]) => {
-      console.log('invoke', channel, args);
       return ipcRenderer.invoke(channel, ...args);
     },
   },

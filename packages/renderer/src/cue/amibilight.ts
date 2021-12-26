@@ -1,4 +1,4 @@
-import { CorsairLed } from 'cue-sdk';
+import type { CorsairLed } from 'cue-sdk';
 let config = window.store.get('config') as StoredConfig;
 
 export class Amibilight {
@@ -41,13 +41,14 @@ export class Amibilight {
     this.positions = positions;
     this.devices = devices;
 
-    console.log(this.devices);
-    console.log(this.positions);
-
     // Precomputing coordinates for capture
     this.imgDataCoordinates = [];
     for (let i = 0; i < positions.length; i++) {
       const device = this.devices[i];
+
+      if (!device || !device.enabled) {
+        continue;
+      }
 
       let startX = positions[i][0].left, startY = positions[i][0].top;
       for (let j = 0; j < positions[i].length; j++) {
@@ -71,8 +72,6 @@ export class Amibilight {
         };
       }));
     }
-
-    console.log(this.imgDataCoordinates);
   }
 
   static updateLeds() {
@@ -91,7 +90,7 @@ export class Amibilight {
   static getColors(index: number, imgDataCoordinates: ImgDataCoordinate[]) {
     const device = this.devices[index];
 
-    if (!device.enabled) {
+    if (!device || !device.enabled) {
       return imgDataCoordinates.map((p) => {
         return {
           ledId: p.ledId,

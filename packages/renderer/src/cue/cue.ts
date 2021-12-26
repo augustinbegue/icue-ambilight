@@ -1,4 +1,4 @@
-import { CorsairDeviceInfo, CorsairError, CorsairLed, CorsairProtocolHandshake } from 'cue-sdk';
+import type { CorsairDeviceInfo, CorsairError, CorsairLed, CorsairProtocolHandshake } from 'cue-sdk';
 import { Amibilight } from './amibilight';
 
 /**
@@ -35,12 +35,14 @@ export class Cue {
     this.info = [];
     this.positions = [];
 
-    if (this.errCode !== CorsairError.CE_Success) {
+    if (this.errCode !== 0) {
       displayError('The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.');
       return;
     }
 
     this.info = this.getDevicesInfo();
+
+    console.log('CorsairDeviceInfo:', this.info);
 
     for (let i = 0; i < this.info.length; i++) {
       if (this.info[i]?.capsMask && window.cue.CorsairDeviceCaps.CDC_Lighting) {
@@ -49,6 +51,9 @@ export class Cue {
     }
 
     this.devices = this.parseDevicesInfo(this.info, this.positions);
+
+    console.log('Devices:', this.devices);
+    console.log('CorsairLeds:', this.positions);
 
     Amibilight.init(this.positions, this.devices);
   }
@@ -71,9 +76,6 @@ export class Cue {
     const previousDevices = window.store.get('devices');
 
     for (let i = 0; i < info.length; i++) {
-      if (!info[i]) {
-        continue;
-      }
       const cdi = info[i] as CorsairDeviceInfo;
 
       const device: Device = {
@@ -116,6 +118,8 @@ export class Cue {
         device.x2 = previousDevices[i].x2;
         device.y2 = previousDevices[i].y2;
       }
+
+      devices.push(device);
     }
 
     return devices;
