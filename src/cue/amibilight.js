@@ -1,5 +1,4 @@
 const sdk = require('cue-sdk');
-const { cue } = require("./cue");
 let config = JSON.parse(localStorage.getItem('config'));
 
 const amibilight = {

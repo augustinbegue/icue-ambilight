@@ -12,7 +12,8 @@ function init() {
     frame: false,
     webPreferences: {
       backgroundThrottling: false,
-      nodeIntegration: true
+      contextIsolation: false,
+      nodeIntegration: true,
     },
     icon: nativeImage.createFromPath('./src/img/icons/icon.png')
   });

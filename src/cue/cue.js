@@ -1,6 +1,22 @@
 const sdk = require('cue-sdk');
-const renderer = require("../../renderer");
 const { amibilight } = require("./amibilight");
+
+/**
+ * Displays the error modal on the screen
+ * @param {string} message Error message to display on the screen
+ */
+function displayError(message) {
+  const errorContainer = document.getElementById("error-container");
+  const errorField = document.getElementById("error-field");
+
+  errorContainer.style.display = 'flex';
+  errorField.innerHTML = message;
+
+  document.getElementById("error-close").addEventListener("click", _event => {
+    const errorContainer = document.getElementById("error-container");
+    errorContainer.style.display = 'none';
+  });
+}
 
 const cue = {
   init: async function () {
@@ -12,7 +28,7 @@ const cue = {
 
     if (this.errCode === 1) {
       console.error("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings (see https://github.com/Tagueo/icue-ambilight/blob/master/README.md#how-to-enable-the-sdk-)");
-      renderer.displayError("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.");
+      displayError("The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.");
     }
 
     this.info = this.getDevicesInfo();

@@ -19,23 +19,6 @@ if (!config || !config.disabledColor || !config.refreshrate) {
   })}`);
 }
 
-/**
- * Displays the error modal on the screen
- * @param {string} message Error message to display on the screen
- */
-function displayError(message) {
-  const errorContainer = document.getElementById("error-container");
-  const errorField = document.getElementById("error-field");
-
-  errorContainer.style.display = 'flex';
-  errorField.innerHTML = message;
-
-  document.getElementById("error-close").addEventListener("click", _event => {
-    const errorContainer = document.getElementById("error-container");
-    errorContainer.style.display = 'none';
-  });
-}
-
 function handleWindowControls() {
   // Make minimise/maximise/restore/close buttons work when they are clicked
   document.getElementById('min-button').addEventListener("click", _event => {
@@ -73,8 +56,6 @@ function handleWindowControls() {
     }
   }
 }
-exports.handleWindowControls = handleWindowControls;
-exports.displayError = displayError;
 
 // When document has loaded, initialise
 document.onreadystatechange = (_event) => {
