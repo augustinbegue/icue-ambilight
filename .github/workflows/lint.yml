@@ -2,23 +2,22 @@ name: Linters
 on:
   push:
     branches:
-      - main
+      - master
     paths:
-      - '**.js'
-      - '**.ts'
-      - 'package-lock.json'
-      - '.github/workflows/lint.yml'
+      - "**.js"
+      - "**.ts"
+      - "package-lock.json"
+      - ".github/workflows/lint.yml"
   pull_request:
     paths:
-      - '**.js'
-      - '**.ts'
-      - 'package-lock.json'
-      - '.github/workflows/lint.yml'
-
+      - "**.js"
+      - "**.ts"
+      - "package-lock.json"
+      - ".github/workflows/lint.yml"
 
 defaults:
   run:
-    shell: 'bash'
+    shell: "bash"
 
 jobs:
   eslint:
@@ -29,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16 # Need for npm >=7.7
-          cache: 'npm'
+          cache: "npm"
 
       # TODO: Install not all dependencies, but only those required for this workflow
       - name: Install dependencies

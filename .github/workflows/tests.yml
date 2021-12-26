@@ -2,28 +2,28 @@ name: Tests
 on:
   push:
     branches:
-      - main
+      - master
     paths:
-      - 'packages/**'
-      - 'tests/**'
-      - 'package-lock.json'
-      - '.github/workflows/tests.yml'
+      - "packages/**"
+      - "tests/**"
+      - "package-lock.json"
+      - ".github/workflows/tests.yml"
   pull_request:
     paths:
-      - 'packages/**'
-      - 'tests/**'
-      - 'package-lock.json'
-      - '.github/workflows/tests.yml'
+      - "packages/**"
+      - "tests/**"
+      - "package-lock.json"
+      - ".github/workflows/tests.yml"
 
 defaults:
   run:
-    shell: 'bash'
+    shell: "bash"
 
 jobs:
   e2e:
     strategy:
       matrix:
-        os: [ windows-latest ]
+        os: [windows-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16 # Need for npm >=7.7
-          cache: 'npm'
+          cache: "npm"
 
       # TODO: Install not all dependencies, but only those required for this workflow
       - name: Install dependencies

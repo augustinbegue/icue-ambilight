@@ -2,20 +2,17 @@ name: Update Electon vendors versions
 on:
   push:
     branches:
-      - main
+      - master
     paths:
-      - 'package-lock.json'
-
+      - "package-lock.json"
 
 concurrency:
   group: update-electron-vendors-${{ github.ref }}
   cancel-in-progress: true
 
-
 defaults:
   run:
-    shell: 'bash'
-
+    shell: "bash"
 
 jobs:
   node-chrome:
@@ -26,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16 # Need for npm >=7.7
-          cache: 'npm'
+          cache: "npm"
 
       # TODO: Install not all dependencies, but only those required for this workflow
       - name: Install dependencies

@@ -2,22 +2,22 @@ name: Typechecking
 on:
   push:
     branches:
-      - main
+      - master
     paths:
-      - '**.ts'
-      - '**/tsconfig.json'
-      - 'package-lock.json'
-      - '.github/workflows/typechecking.yml'
+      - "**.ts"
+      - "**/tsconfig.json"
+      - "package-lock.json"
+      - ".github/workflows/typechecking.yml"
   pull_request:
     paths:
-      - '**.ts'
-      - '**/tsconfig.json'
-      - 'package-lock.json'
-      - '.github/workflows/typechecking.yml'
+      - "**.ts"
+      - "**/tsconfig.json"
+      - "package-lock.json"
+      - ".github/workflows/typechecking.yml"
 
 defaults:
   run:
-    shell: 'bash'
+    shell: "bash"
 
 jobs:
   typescript:
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16 # Need for npm >=7.7
-          cache: 'npm'
+          cache: "npm"
 
       # TODO: Install not all dependencies, but only those required for this workflow
       - name: Install dependencies
