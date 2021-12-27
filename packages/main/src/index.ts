@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, desktopCapturer, Tray, Menu } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, desktopCapturer, Tray, Menu, nativeImage } from 'electron';
 import { join } from 'path';
 import { URL } from 'url';
 import './security-restrictions';
@@ -99,11 +99,20 @@ const createWindow = async () => {
   await mainWindow.loadURL(pageUrl);
 };
 
-function createTray() {
-  const iconPath = join(__dirname, '../../renderer/assets/img/icons/icon-light.png');
+async function createTray() {
+  const iconPath = join(__dirname, '../../renderer/assets/img/icons/icon-light-small.png');
   const tray = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'icue-ambilight',
+      type: 'normal',
+      enabled: false,
+      icon: await nativeImage.createThumbnailFromPath(iconPath, { width: 10, height: 10 }),
+    },
+    {
+      type: 'separator',
+    },
     {
       label: 'Show', click: function () {
         mainWindow?.show();
