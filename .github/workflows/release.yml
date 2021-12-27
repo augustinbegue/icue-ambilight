@@ -48,9 +48,9 @@ jobs:
           include-commit-body: true
           include-abbreviated-commit: true
 
-      - name: Get version from current date
+      - name: Get version from package.json
         id: version
-        run: echo "::set-output name=build-version::$(node -e "try{console.log(require('./.electron-builder.config.js').extraMetadata.version)}catch(e){console.error(e);process.exit(1)}")"
+        run: echo "::set-output name=build-version::$(node -e "try{require('./package.json').version;}catch(e){console.error(e);process.exit(1)}")"
 
       - name: Waiting on All checks
         uses: lewagon/wait-on-check-action@v0.2
