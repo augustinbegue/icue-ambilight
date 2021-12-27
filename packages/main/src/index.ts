@@ -5,6 +5,7 @@ import trayIconUrl from '../assets/icon-64.png';
 import './security-restrictions';
 const Store = require('electron-store');
 Store.initRenderer();
+const store = new Store();
 
 const isSingleInstance = app.requestSingleInstanceLock();
 const isDevelopment = import.meta.env.MODE === 'development';
@@ -88,7 +89,7 @@ const createWindow = async () => {
   const tray = createTray();
 
   mainWindow.on('close', (event) => {
-    if (!isQuitting) {
+    if (!isQuitting && store.get('config').closeToTray) {
       event.preventDefault();
       mainWindow?.hide();
     } else {
@@ -119,7 +120,12 @@ function createTray() {
       },
     },
     {
-      label: 'Exit', click: function () {
+      label: 'Support', click: function () {
+        window.open('https://github.com/augustinbegue/icue-ambilight/');
+      },
+    },
+    {
+      label: 'Quit', click: function () {
         isQuitting = true;
         app.quit();
       },
