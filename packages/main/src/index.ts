@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, desktopCapturer } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, desktopCapturer, Tray, Menu } from 'electron';
 import { join } from 'path';
 import { URL } from 'url';
 import './security-restrictions';
@@ -14,6 +14,7 @@ if (!isSingleInstance) {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let isQuitting = false;
 
 const createWindow = async () => {
   mainWindow = new BrowserWindow({
@@ -72,15 +73,65 @@ const createWindow = async () => {
   ipcMain.on('win-close', () => { mainWindow?.close(); });
 
   // Handle window events trough BrowserWindow
+  // Events handled in renderer process
   mainWindow.on('maximize', () => { mainWindow?.webContents.send('maximized'); });
   mainWindow.on('unmaximize', () => { mainWindow?.webContents.send('unmaximized'); });
+
+  // Handle openinig links trough BrowserWindow
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
     return { action: 'deny' };
   });
 
+  // System tray behaviour
+  const tray = createTray();
+
+  mainWindow.on('close', (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      mainWindow?.hide();
+    } else {
+      tray.destroy();
+    }
+  });
+
+
   await mainWindow.loadURL(pageUrl);
 };
+
+function createTray() {
+  const iconPath = join(__dirname, '../../renderer/assets/img/icons/icon-light.png');
+  const tray = new Tray(iconPath);
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show', click: function () {
+        mainWindow?.show();
+      },
+    },
+    {
+      label: 'Exit', click: function () {
+        isQuitting = true;
+        app.quit();
+      },
+    },
+  ]);
+
+  tray.on('double-click', () => {
+    if (mainWindow) {
+      if (mainWindow.isVisible()) {
+        mainWindow.hide();
+      } else {
+        mainWindow.show();
+      }
+    }
+  });
+
+  tray.setContextMenu(contextMenu);
+  tray.setToolTip('icue-ambilight');
+
+  return tray;
+}
 
 app.on('second-instance', () => {
   // Someone tried to run a second instance, we should focus our window.
@@ -94,6 +145,14 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('before-quit', () => {
+  isQuitting = true;
+});
+
+app.on('will-quit', () => {
+  isQuitting = true;
 });
 
 app.whenReady()
