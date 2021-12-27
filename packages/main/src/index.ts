@@ -54,6 +54,13 @@ const createWindow = async () => {
     ? import.meta.env.VITE_DEV_SERVER_URL
     : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
 
+  // Handle settings change trough ipcMain
+  ipcMain.on('set-start-with-windows', (_, args) => {
+    app.setLoginItemSettings({
+      openAtLogin: args,
+    });
+  });
+
   // Handle Desktop Capture trough ipcMain
   ipcMain.handle(
     'dekstop-capture-get-sources',
@@ -90,9 +97,11 @@ const createWindow = async () => {
 
   mainWindow.on('close', (event) => {
     if (!isQuitting && store.get('config').closeToTray) {
+      console.log('minimize to tray');
       event.preventDefault();
       mainWindow?.hide();
     } else {
+      console.log('close');
       tray.destroy();
     }
   });
@@ -121,7 +130,7 @@ function createTray() {
     },
     {
       label: 'Support', click: function () {
-        window.open('https://github.com/augustinbegue/icue-ambilight/');
+        shell.openExternal('https://github.com/augustinbegue/icue-ambilight/');
       },
     },
     {
@@ -172,6 +181,10 @@ app.on('will-quit', () => {
 app.whenReady()
   .then(createWindow)
   .catch((e) => console.error('Failed create window:', e));
+
+app.setLoginItemSettings({
+  openAtLogin: store.get('config').startWithWindows,
+});
 
 // Auto-updates
 if (import.meta.env.PROD) {

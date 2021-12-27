@@ -3,7 +3,7 @@ body {
   min-width: 500px;
   height: 100%;
   overflow: hidden;
-  -webkit-user-select: none;
+  user-select: none;
 }
 
 .source:hover,
@@ -54,9 +54,10 @@ body {
 
 /* The switch - the box around the slider */
 .switch {
+  flex-shrink: 0;
   position: relative;
   display: inline-block;
-  width: 3rem;
+  min-width: 3rem;
   height: 1.5rem;
 }
 

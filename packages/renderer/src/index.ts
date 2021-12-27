@@ -93,6 +93,7 @@ document.onreadystatechange = () => {
                 ...window.store.get('config'),
                 startWithWindows: (ev.target as HTMLInputElement).checked,
             });
+            window.electron.ipcRenderer.send('set-start-with-windows', (ev.target as HTMLInputElement).checked);
         };
 
         const minimizeToTrayCheckbox = document.getElementById('minimizeToTrayCheckbox') as HTMLInputElement;
