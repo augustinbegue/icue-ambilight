@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, shell, desktopCapturer, Tray, Menu, nativeImage } from 'electron';
 import { join } from 'path';
 import { URL } from 'url';
+import trayIconUrl from '../assets/icon-64.png';
 import './security-restrictions';
 const Store = require('electron-store');
 Store.initRenderer();
@@ -95,20 +96,19 @@ const createWindow = async () => {
     }
   });
 
-
   await mainWindow.loadURL(pageUrl);
 };
 
-async function createTray() {
-  const iconPath = join(__dirname, '../../renderer/assets/img/icons/icon-light-small.png');
-  const tray = new Tray(iconPath);
+function createTray() {
+  const img = nativeImage.createFromDataURL(trayIconUrl);
+  const tray = new Tray(img);
 
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'icue-ambilight',
       type: 'normal',
       enabled: false,
-      icon: await nativeImage.createThumbnailFromPath(iconPath, { width: 10, height: 10 }),
+      // icon: nativeImage.createThumbnailFromPath(iconPath, { width: 10, height: 10 }),
     },
     {
       type: 'separator',
@@ -145,15 +145,14 @@ async function createTray() {
 app.on('second-instance', () => {
   // Someone tried to run a second instance, we should focus our window.
   if (mainWindow) {
+    mainWindow.show();
     if (mainWindow.isMinimized()) mainWindow.restore();
     mainWindow.focus();
   }
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on('before-quit', () => {

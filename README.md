@@ -6,7 +6,10 @@
 
 # icue-ambilight
 
-<a href="https://www.corsair.com/icue"><img src="https://cwsmgmt.corsair.com/pdp/k65-rgb-mini/assets/images/icue-logo.png" alt="iCUE" height="80" /></a>
+<p>
+<a href="#"><img src="./assets/logo-128.png" alt="iCUE" height="60" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.corsair.com/icue"><img src="https://cwsmgmt.corsair.com/pdp/k65-rgb-mini/assets/images/icue-logo.png" alt="iCUE" height="60" /></a>
+</p>
 
 Ambilight for Corsair devices: Synchronise the colors of your iCue compatible devices with the content displayed on your screen.
 
