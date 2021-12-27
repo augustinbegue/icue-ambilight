@@ -13,6 +13,8 @@ function initConfig() {
             g: 0,
             b: 0,
         },
+        closeToTray: true,
+        startWithWindows: true,
     });
 }
 
@@ -59,7 +61,7 @@ function handleWindowControls() {
 const config = window.store.get('config') as StoredConfig;
 
 if (config) {
-    if (!config.disabledColor || !config.refreshrate) {
+    if (!config.disabledColor || !config.refreshrate || !config.blur || !config.closeToTray) {
         initConfig();
     }
 } else {
@@ -82,5 +84,24 @@ document.onreadystatechange = () => {
         Processor.doLoad().then(() => {
             initLayout();
         });
+
+        // Handle Settings checkboxes
+        const startWithWindowsCheckbox = document.getElementById('startWithWindowsCheckbox') as HTMLInputElement;
+        startWithWindowsCheckbox.checked = config.startWithWindows;
+        startWithWindowsCheckbox.onchange = (ev) => {
+            window.store.set('config', {
+                ...window.store.get('config'),
+                startWithWindows: (ev.target as HTMLInputElement).checked,
+            });
+        };
+
+        const minimizeToTrayCheckbox = document.getElementById('minimizeToTrayCheckbox') as HTMLInputElement;
+        minimizeToTrayCheckbox.checked = config.closeToTray;
+        minimizeToTrayCheckbox.onchange = (ev) => {
+            window.store.set('config', {
+                ...window.store.get('config'),
+                closeToTray: (ev.target as HTMLInputElement).checked,
+            });
+        };
     }
 };

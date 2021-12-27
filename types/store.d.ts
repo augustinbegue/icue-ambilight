@@ -7,4 +7,5 @@ interface StoredConfig {
         b: number;
     };
     closeToTray: boolean;
+    startWithWindows: boolean;
 }

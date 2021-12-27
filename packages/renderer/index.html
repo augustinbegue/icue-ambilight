@@ -170,6 +170,48 @@
         <section class="section is-hidden"
                  id="settingsContainer">
           <div class="container">
+            <h1 class="title is-5">App Behaviour</h1>
+            <div class="box"
+                 style="width: auto;">
+              <div class="field">
+                <label class="checkbox is-inline-flex"
+                       style="color: white; margin: 8px;">
+                  <label class="switch"
+                         style="margin-top: 12px; margin-right: 12px;">
+                    <input type="checkbox"
+                           id="startWithWindowsCheckbox">
+                    <span class="slider round"></span>
+                  </label>
+                  <span>
+                    <p class="title is-6">Start with windows</p>
+                    <p class="subtitle is-6">The app will start automatically when you log into your session.</p>
+                  </span>
+                </label>
+                <hr>
+                <label class="checkbox is-inline-flex"
+                       style="color: white; margin: 8px;">
+                  <label class="switch"
+                         style="margin-top: 12px; margin-right: 12px;">
+                    <input type="checkbox"
+                           id="minimizeToTrayCheckbox">
+                    <span class="slider round"></span>
+                  </label>
+                  <span>
+                    <p class="title is-6">Minimize to tray</p>
+                    <p class="subtitle is-6">Closing the window will cause icue-ambilight to stay opened in your system
+                      tray.</p>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <h1 class="title is-5">Connected Devices</h1>
+            <div class="box"
+                 style="width: auto;">
+              <div id="devices"
+                   class="content">
+
+              </div>
+            </div>
             <h1 class="title is-5">Support</h1>
             <div style="display: inline-flex; flex-direction: column; margin-bottom: 1.25em;">
               <a href="https://github.com/augustinbegue/icue-ambilight/issues/new/choose"
@@ -189,14 +231,6 @@
                 </span>
                 <span>Ask a Question</span>
               </a>
-            </div>
-            <h1 class="title is-5">Devices Connected</h1>
-            <div class="box"
-                 style="width: auto;">
-              <div id="devices"
-                   class="content">
-
-              </div>
             </div>
             <h1 class="title is-5">About</h1>
             <p>icue-ambilight is a free software created by <a href="https://begue.cc"

@@ -46,7 +46,7 @@ export class Amibilight {
     for (let i = 0; i < positions.length; i++) {
       const device = this.devices[i];
 
-      if (!device || !device.enabled) {
+      if (!device) {
         continue;
       }
 
