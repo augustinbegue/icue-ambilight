@@ -4,21 +4,6 @@ import { Cue } from './cue/cue';
 import { initLayout } from './cue/layout';
 import { Panels } from './gui/Panels';
 
-function initConfig() {
-    window.store.set('config', {
-        refreshrate: 30,
-        blur: 0,
-        disabledColor: {
-            r: 0,
-            g: 0,
-            b: 0,
-        },
-        closeToTray: true,
-        startWithWindows: true,
-        startInTray: false,
-    });
-}
-
 function handleWindowControls() {
     // Make minimise/maximise/restore/close buttons work when they are clicked
     document.getElementById('min-button')?.addEventListener('click', () => {
@@ -59,19 +44,11 @@ function handleWindowControls() {
     }
 }
 
-const config = window.store.get('config') as StoredConfig;
-
-if (config) {
-    if (!config.disabledColor || !config.refreshrate || !config.blur || !config.closeToTray) {
-        initConfig();
-    }
-} else {
-    initConfig();
-}
-
 // When document has loaded, initialise the app
 document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
+        const config = window.store.get('config') as StoredConfig;
+
         // Window controls
         handleWindowControls();
 

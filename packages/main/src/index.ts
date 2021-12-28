@@ -23,13 +23,23 @@ const createWindow = async () => {
     show: false, // Use 'ready-to-show' event to show window
     frame: false, // Remove window frame
     webPreferences: {
-      nativeWindowOpen: true,
+      nativeWindowOpen: false,
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like iframe or Electron's BrowserView. https://www.electronjs.org/docs/latest/api/webview-tag#warning
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       nodeIntegration: true,
       backgroundThrottling: false,
     },
   });
+
+  // Create/Update config
+  const config = store.get('config') as StoredConfig;
+  if (config) {
+    if (!config.disabledColor || !config.refreshrate || !config.blur || !config.closeToTray || !config.startWithWindows || !config.startInTray) {
+      initConfig();
+    }
+  } else {
+    initConfig();
+  }
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
@@ -111,6 +121,25 @@ const createWindow = async () => {
   await mainWindow.loadURL(pageUrl);
 };
 
+function initConfig() {
+  store.set('config', {
+    refreshrate: 30,
+    blur: 0,
+    disabledColor: {
+      r: 0,
+      g: 0,
+      b: 0,
+    },
+    closeToTray: true,
+    startWithWindows: true,
+    startInTray: false,
+  });
+
+  app.setLoginItemSettings({
+    openAtLogin: store.get('config.startWithWindows'),
+  });
+}
+
 function createTray() {
   const img = nativeImage.createFromDataURL(trayIconUrl);
   const tray = new Tray(img);
@@ -183,10 +212,6 @@ app.on('will-quit', () => {
 app.whenReady()
   .then(createWindow)
   .catch((e) => console.error('Failed create window:', e));
-
-app.setLoginItemSettings({
-  openAtLogin: store.get('config').startWithWindows,
-});
 
 // Auto-updates
 if (import.meta.env.PROD) {
