@@ -28,6 +28,9 @@ const config = {
       entry: 'src/index.ts',
       formats: ['cjs'],
     },
+    assetsInclude: [
+      '**/*.{png}',
+    ],
     rollupOptions: {
       external: [
         'cue-sdk',

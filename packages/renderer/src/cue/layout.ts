@@ -79,10 +79,19 @@ export function initLayout() {
     const checkboxShowLeds = document.getElementById(`device${i}showleds`) as HTMLInputElement;
 
     const handler = function () {
-      const x1 = parseInt(x1In.value) > displayCanvas.width ? displayCanvas.width : parseInt(x1In.value);
-      const x2 = parseInt(x2In.value) > displayCanvas.width ? displayCanvas.width : parseInt(x2In.value);
-      const y1 = parseInt(y1In.value) > displayCanvas.height ? displayCanvas.height : parseInt(y1In.value);
-      const y2 = parseInt(y2In.value) > displayCanvas.height ? displayCanvas.height : parseInt(y2In.value);
+      let x1 = parseInt(x1In.value) > displayCanvas.width ? displayCanvas.width : parseInt(x1In.value);
+      let x2 = x1 + parseInt(x2In.value) > displayCanvas.width ? displayCanvas.width : parseInt(x2In.value);
+      let y1 = parseInt(y1In.value) > displayCanvas.height ? displayCanvas.height : parseInt(y1In.value);
+      let y2 = y1 + parseInt(y2In.value) > displayCanvas.height ? displayCanvas.height : parseInt(y2In.value);
+      x1 = x1 < 0 ? 0 : x1;
+      x2 = x2 < 0 ? 0 : x2;
+      y1 = y1 < 0 ? 0 : y1;
+      y2 = y2 < 0 ? 0 : y2;
+
+      x1In.value = x1.toString();
+      x2In.value = x2.toString();
+      y1In.value = y1.toString();
+      y2In.value = y2.toString();
 
       updateLayout(i, x1, y1, x2, y2, checkboxEnable.checked, checkboxShowLeds.checked);
     };

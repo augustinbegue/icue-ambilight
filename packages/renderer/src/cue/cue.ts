@@ -5,7 +5,7 @@ import { Amibilight } from './amibilight';
  * Displays the error modal on the screen
  * @param {string} message Error message to display on the screen
  */
-function displayError(message: string) {
+function displayError(message: string, reloadOnClose = false) {
   const errorContainer = document.getElementById('error-container');
   const errorField = document.getElementById('error-field');
 
@@ -17,6 +17,8 @@ function displayError(message: string) {
 
   document.getElementById('error-close')?.addEventListener('click', () => {
     errorContainer.style.display = 'none';
+    if (reloadOnClose)
+      window.location.reload();
   });
 }
 
@@ -36,7 +38,7 @@ export class Cue {
     this.positions = [];
 
     if (this.errCode !== 0) {
-      displayError('The Corsair SDK is not connected. Please check that iCue is opened and that you have enabled the sdk in the settings. Then, reload the app.');
+      displayError('The Corsair SDK is not connected. Please check that iCue is opened and that you have <a style="color: white; text-decoration: underline" href="https://github.com/augustinbegue/icue-ambilight/blob/master/Q%26A.md#how-to-enable-the-sdk-" target="_blank">enabled the sdk in the settings</a>. Then, close this warning to reload the app.', true);
       return;
     }
 

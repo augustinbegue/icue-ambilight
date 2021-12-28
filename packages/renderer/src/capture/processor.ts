@@ -1,7 +1,5 @@
 import { Cue } from '../cue/cue';
 
-const config = window.store.get('config') as StoredConfig;
-
 export class Processor {
   static video: HTMLVideoElement | null;
   static c1: HTMLCanvasElement | null;
@@ -64,11 +62,14 @@ export class Processor {
     if (!this.ctx1)
       return;
 
+    const config = window.store.get('config') as StoredConfig;
+
     this.blur = document.getElementById('blur') as HTMLInputElement;
 
-    if (config.blur === undefined) {
+    if (!config.blur) {
       config.blur = 0;
     }
+
     window.store.set('config', config);
     this.blur.value = config.blur.toString();
 
