@@ -165,6 +165,11 @@ function createTray() {
       },
     },
     {
+      label: 'Reload', click: function () {
+        mainWindow?.webContents.reload();
+      },
+    },
+    {
       label: 'Quit', click: function () {
         isQuitting = true;
         app.quit();
