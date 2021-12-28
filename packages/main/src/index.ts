@@ -38,7 +38,9 @@ const createWindow = async () => {
    * @see https://github.com/electron/electron/issues/25012
    */
   mainWindow.on('ready-to-show', () => {
-    mainWindow?.show();
+    if (!store.get('config.startInTray')) {
+      mainWindow?.show();
+    }
 
     if (isDevelopment) {
       mainWindow?.webContents.openDevTools();

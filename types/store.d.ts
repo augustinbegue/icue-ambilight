@@ -8,4 +8,5 @@ interface StoredConfig {
     };
     closeToTray: boolean;
     startWithWindows: boolean;
+    startInTray: boolean;
 }

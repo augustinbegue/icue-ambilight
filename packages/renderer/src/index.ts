@@ -15,6 +15,7 @@ function initConfig() {
         },
         closeToTray: true,
         startWithWindows: true,
+        startInTray: false,
     });
 }
 
@@ -102,6 +103,15 @@ document.onreadystatechange = () => {
             window.store.set('config', {
                 ...window.store.get('config'),
                 closeToTray: (ev.target as HTMLInputElement).checked,
+            });
+        };
+
+        const startInTrayCheckbox = document.getElementById('startInTrayCheckbox') as HTMLInputElement;
+        startInTrayCheckbox.checked = config.startInTray;
+        startInTrayCheckbox.onchange = (ev) => {
+            window.store.set('config', {
+                ...window.store.get('config'),
+                startInTray: (ev.target as HTMLInputElement).checked,
             });
         };
     }
