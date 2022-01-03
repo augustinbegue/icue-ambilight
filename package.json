@@ -1,6 +1,6 @@
 {
   "name": "icue-ambilight",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Ambilight for iCue devices",
   "engines": {
     "node": ">=v16.13",
