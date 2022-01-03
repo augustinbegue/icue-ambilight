@@ -63,8 +63,6 @@ document.onreadystatechange = () => {
             initLayout();
         });
 
-        console.log(window.store.get('config.startInTray'));
-
         // Handle Settings checkboxes
         const startWithWindowsCheckbox = document.getElementById('startWithWindowsCheckbox') as HTMLInputElement;
         startWithWindowsCheckbox.checked = config.startWithWindows;
