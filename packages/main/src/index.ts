@@ -34,7 +34,7 @@ const createWindow = async () => {
   // Create/Update config
   const config = store.get('config') as StoredConfig;
   if (config) {
-    if (!config.disabledColor || !config.refreshrate || !config.blur || !config.closeToTray || !config.startWithWindows || !config.startInTray) {
+    if (!('blur' in config && 'refreshrate' in config && 'disabledColor' in config && 'closeToTray' in config && 'startWithWindows' in config && 'startInTray' in config)) {
       initConfig();
     }
   } else {
