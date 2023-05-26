@@ -50,6 +50,11 @@ export class Amibilight {
         continue;
       }
 
+      if (!device.ledsCount) {
+        this.imgDataCoordinates.push([]);
+        continue;
+      }
+
       let startX = positions[i][0].left, startY = positions[i][0].top;
       for (let j = 0; j < positions[i].length; j++) {
         const element = positions[i][j];
@@ -79,7 +84,7 @@ export class Amibilight {
     this.layoutCtx = this.layoutC?.getContext('2d');
 
     for (let i = 0; i < this.positions.length; i++) {
-      if (this.positions[i].length > 0) {
+      if (this.positions[i] !== undefined && this.positions[i].length > 0) {
         const colors = this.getColors(i, this.imgDataCoordinates[i]);
         window.cue.CorsairSetLedsColorsBufferByDeviceIndex(i, colors);
         window.cue.CorsairSetLedsColorsFlushBuffer();

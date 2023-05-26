@@ -1,5 +1,8 @@
 interface StoredConfig {
     blur: number;
+    brightness: number;
+    contrast: number;
+    saturation: number;
     refreshrate: number;
     disabledColor: {
         r: number;
