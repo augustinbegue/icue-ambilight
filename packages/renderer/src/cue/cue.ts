@@ -80,17 +80,21 @@ export class Cue {
     for (let i = 0; i < info.length; i++) {
       const cdi = info[i] as CorsairDeviceInfo;
 
+      if (positions[i] === undefined) {
+        console.log('no positions for', cdi);
+      }
+
       const device: Device = {
         enabled: false,
         showLeds: false,
         model: cdi.model,
         ledsCount: cdi.ledsCount,
-        sizeX: positions[i][0].width,
-        sizeY: positions[i][0].height,
+        sizeX: positions[i] !== undefined ? positions[i][0].width : 0,
+        sizeY: positions[i] !== undefined ? positions[i][0].height : 0,
         x1: 0,
         y1: 0,
-        x2: positions[i][0].width,
-        y2: positions[i][0].height,
+        x2: positions[i] !== undefined ? positions[i][0].width : 0,
+        y2: positions[i] !== undefined ? positions[i][0].height : 0,
       };
 
       if (previousDevices && previousDevices[i] && !previousDevices[i].enabled) {
@@ -98,6 +102,8 @@ export class Cue {
       } else {
         device.enabled = true;
       }
+
+      if (!device.ledsCount) device.enabled = false;
 
       if (positions[i]) {
         for (let j = 0; j < positions[i].length; j++) {
